@@ -1,124 +1,145 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { useLanguage } from "../context/LanguageContext";
+import { LANGUAGES } from "../i18n/translations";
 
 const QUICK_LINKS = [
-  { to: "/maternal", label: "Maternal Care" },
-  { to: "/baby", label: "Baby Care" },
-  { to: "/mental-health", label: "Mental Health" },
-  { to: "/health-info", label: "Health Information" },
+  { to: "/maternal", labelKey: "linkMaternal" },
+  { to: "/baby", labelKey: "linkBaby" },
+  { to: "/mental-health", labelKey: "linkMental" },
+  { to: "/health-info", labelKey: "linkHealthInfo" },
 ];
 
 const SERVICES = [
-  { to: "/facilities", label: "Health Facilities" },
-  { to: "/appointments", label: "Appointments" },
-  { to: "/register", label: "Create Account" },
-  { to: "/login", label: "Log in" },
+  { to: "/facilities", labelKey: "linkFacilities" },
+  { to: "/appointments", labelKey: "linkAppointments" },
+  { to: "/programs", labelKey: "linkPrograms" },
+  { to: "/community", labelKey: "linkCommunity" },
 ];
 
 const COMPANY = [
-  { to: "/about", label: "About AfyaLink" },
-  { to: "/contact", label: "Contact Us" },
+  { to: "/about", labelKey: "linkAbout" },
+  { to: "/impact", labelKey: "linkImpact" },
+  { to: "/contact", labelKey: "linkContact" },
 ];
 
 export default function Footer() {
+  const { language, setLanguage, t } = useLanguage();
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-brand-primary text-white">
-      {/* Emergency strip — white on teal for high contrast */}
-      <div className="border-b border-white/15">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 px-4 py-3 text-sm sm:flex-row sm:items-center sm:px-6 lg:px-8">
-          <p className="flex items-center gap-2 font-medium">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-brand-primary">
+    <footer className="border-t border-gray-200 bg-white text-gray-900">
+      {/* Emergency notice */}
+      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-start gap-3 rounded-xl bg-brand-primary px-5 py-4 text-white sm:flex-row sm:items-center sm:justify-between">
+          <p className="flex items-center gap-3 text-sm font-medium">
+            <span className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-white text-brand-primary">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M12 3v18M3 12h18"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
+                <path d="M12 3v18M3 12h18" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
               </svg>
             </span>
-            In an emergency, call <strong className="text-brand-secondary">999</strong> or go to the nearest health facility.
+            <span>
+              {t.footer.emergencyTitle}{" "}
+              <strong className="text-brand-secondary">999</strong>{" "}
+              {t.footer.emergencyEnd}
+            </span>
           </p>
-          <p className="text-white/75">Available in English · Kiswahili · Somali</p>
+          <p className="text-xs text-white/80 sm:text-sm">
+            {t.footer.languagesAvailable}
+          </p>
         </div>
       </div>
 
-      {/* Main footer grid */}
+      {/* Newsletter */}
+      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+        <NewsletterCard />
+      </div>
+
+      {/* Main grid */}
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
-        {/* Column 1 — Brand */}
+        {/* Brand column */}
         <div>
-          <Link to="/" className="flex items-center" aria-label="AfyaLink home">
-            <img
-              src={logo}
-              alt="AfyaLink"
-              className="h-10 w-auto object-contain"
-            />
+          <Link to="/" className="flex items-center" aria-label={t.nav.homeAria}>
+            <img src={logo} alt="AfyaLink" className="h-10 w-auto object-contain" />
           </Link>
-          <p className="mt-4 text-sm leading-relaxed text-white/80">
-            Community health information and support for mothers, newborns, and
-            families in Northeastern Kenya.
+          <p className="mt-4 text-sm leading-relaxed text-gray-600">
+            {t.newsletter.descriptionAfter /* reuse tone? no — use dedicated line below */}
           </p>
 
-          {/* Language pills (visual indicator, matches navbar switcher) */}
+          {/* Language pills — CLICKABLE, synced with navbar */}
           <div className="mt-5 flex items-center gap-2">
-            {["EN", "SW", "SO"].map((code) => (
-              <span
-                key={code}
-                className="rounded-md border border-white/30 px-2 py-1 text-xs font-semibold text-white/80"
-              >
-                {code}
-              </span>
-            ))}
+            {LANGUAGES.map((lang) => {
+              const active = language === lang.code;
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => setLanguage(lang.code)}
+                  aria-pressed={active}
+                  aria-label={lang.name}
+                  className={[
+                    "rounded-md border px-2 py-1 text-xs font-semibold transition",
+                    active
+                      ? "border-brand-secondary bg-brand-secondary text-white"
+                      : "border-gray-300 text-gray-700 hover:border-brand-primary hover:text-brand-primary",
+                  ].join(" ")}
+                >
+                  {lang.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Social */}
+          <div className="mt-6 flex items-center gap-2">
+            <SocialLink href="https://wa.me/254700123456" label="WhatsApp" icon={<WhatsAppIcon />} />
+            <SocialLink href="https://facebook.com" label="Facebook" icon={<FacebookIcon />} />
+            <SocialLink href="https://x.com" label="X" icon={<XIcon />} />
           </div>
         </div>
 
-        {/* Column 2 — Health information */}
-        <FooterColumn title="Health Topics" links={QUICK_LINKS} />
+        <FooterColumn title={t.footer.healthTopics} links={QUICK_LINKS} />
+        <FooterColumn title={t.footer.services} links={SERVICES} />
 
-        {/* Column 3 — Services */}
-        <FooterColumn title="Services" links={SERVICES} />
-
-        {/* Column 4 — Company + Contact */}
+        {/* Company + Contact */}
         <div>
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-brand-secondary">
-            Company
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-brand-primary">
+            {t.footer.company}
           </h3>
           <ul className="mt-4 space-y-2 text-sm">
             {COMPANY.map((link) => (
               <li key={link.to}>
                 <Link
                   to={link.to}
-                  className="text-white/80 transition hover:text-brand-secondary focus:outline-none focus-visible:text-brand-secondary focus-visible:underline"
+                  className="text-gray-700 transition hover:text-brand-primary focus:outline-none focus-visible:text-brand-primary focus-visible:underline"
                 >
-                  {link.label}
+                  {t.footer[link.labelKey]}
                 </Link>
               </li>
             ))}
           </ul>
 
-          <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-brand-secondary">
-            Contact
+          <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-brand-primary">
+            {t.footer.contact}
           </h3>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
+          <ul className="mt-4 space-y-2 text-sm text-gray-700">
             <li className="flex items-center gap-2">
               <MailIcon />
               <a
-                href="mailto:support@afyalink.health"
-                className="transition hover:text-brand-secondary focus:outline-none focus-visible:text-brand-secondary focus-visible:underline"
+                href="mailto:info@afya.org"
+                className="transition hover:text-brand-primary focus:outline-none focus-visible:text-brand-primary focus-visible:underline"
               >
-                support@afyalink.health
+                info@afya.org
               </a>
             </li>
             <li className="flex items-center gap-2">
               <PhoneIcon />
               <a
-                href="tel:+254700000000"
-                className="transition hover:text-brand-secondary focus:outline-none focus-visible:text-brand-secondary focus-visible:underline"
+                href="tel:+254700123456"
+                className="transition hover:text-brand-primary focus:outline-none focus-visible:text-brand-primary focus-visible:underline"
               >
-                +254 700 000 000
+                +254 700 123 456
               </a>
             </li>
             <li className="flex items-center gap-2">
@@ -129,35 +150,26 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar — copyright + legal + back to top */}
-      <div className="border-t border-white/15">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-white/70 sm:flex-row sm:px-6 lg:px-8">
-          <p>© {year} AfyaLink. All rights reserved.</p>
+      {/* Bottom bar */}
+      <div className="border-t border-gray-200">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-gray-600 sm:flex-row sm:px-6 lg:px-8">
+          <p>© {year} AfyaLink. {t.footer.rights}</p>
           <ul className="flex items-center gap-4">
             <li>
-              <Link to="/privacy" className="transition hover:text-brand-secondary">
-                Privacy
+              <Link to="/privacy" className="transition hover:text-brand-primary">
+                {t.footer.privacy}
               </Link>
             </li>
             <li>
-              <Link to="/terms" className="transition hover:text-brand-secondary">
-                Terms
+              <Link to="/terms" className="transition hover:text-brand-primary">
+                {t.footer.terms}
               </Link>
             </li>
             <li>
-              <a
-                href="#top"
-                className="inline-flex items-center gap-1 transition hover:text-brand-secondary"
-              >
-                Back to top
+              <a href="#top" className="inline-flex items-center gap-1 transition hover:text-brand-primary">
+                {t.footer.backToTop}
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M12 19V5M5 12l7-7 7 7"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
             </li>
@@ -168,11 +180,120 @@ export default function Footer() {
   );
 }
 
-/* ---------- Reusable column ---------- */
+/* ---------- Newsletter ---------- */
+function NewsletterCard() {
+  const { t } = useLanguage();
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const trimmed = email.trim();
+    if (!trimmed || !trimmed.includes("@") || !trimmed.includes(".")) {
+      setError(t.newsletter.invalidEmail);
+      return;
+    }
+    setError("");
+    setSubscribed(true);
+    setEmail("");
+  }
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-white to-brand-secondary/10 p-6 sm:p-8">
+      <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-secondary/10 blur-2xl" />
+
+      <div className="relative grid items-center gap-6 md:grid-cols-2">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-white">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 7l9 6 9-6M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7a2 2 0 012-2h14a2 2 0 012 2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-primary">
+              {t.newsletter.kicker}
+            </p>
+          </div>
+
+          <h2 className="mt-3 text-xl font-bold text-gray-900 sm:text-2xl">
+            {t.newsletter.title}
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            {t.newsletter.descriptionBefore}{" "}
+            <strong className="text-brand-primary">{t.newsletter.descriptionBold}</strong>{" "}
+            {t.newsletter.descriptionAfter}
+          </p>
+        </div>
+
+        <div>
+          {subscribed ? (
+            <div className="flex items-start gap-3 rounded-xl border border-brand-secondary/30 bg-white p-4">
+              <span className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-secondary text-white">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-brand-primary">
+                  {t.newsletter.subscribedTitle}
+                </p>
+                <p className="mt-0.5 text-xs text-gray-600">
+                  {t.newsletter.subscribedMessage}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-2" noValidate>
+              <label htmlFor="footer-email" className="sr-only">
+                {t.newsletter.emailLabel}
+              </label>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <input
+                  id="footer-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (error) setError("");
+                  }}
+                  placeholder={t.newsletter.placeholder}
+                  aria-invalid={error ? "true" : "false"}
+                  aria-describedby={error ? "footer-email-error" : undefined}
+                  className="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-secondary"
+                />
+                <button
+                  type="submit"
+                  className="whitespace-nowrap rounded-md bg-brand-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                >
+                  {t.newsletter.subscribe}
+                </button>
+              </div>
+              {error && (
+                <p id="footer-email-error" className="text-xs text-brand-primary">
+                  {error}
+                </p>
+              )}
+              <p className="text-xs text-gray-500">
+                {t.newsletter.privacyPrefix}{" "}
+                <Link to="/privacy" className="text-brand-primary hover:underline">
+                  {t.newsletter.privacyLink}
+                </Link>.
+              </p>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Footer column ---------- */
 function FooterColumn({ title, links }) {
+  const { t } = useLanguage();
   return (
     <div>
-      <h3 className="text-sm font-semibold uppercase tracking-wide text-brand-secondary">
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-brand-primary">
         {title}
       </h3>
       <ul className="mt-4 space-y-2 text-sm">
@@ -180,9 +301,9 @@ function FooterColumn({ title, links }) {
           <li key={link.to}>
             <Link
               to={link.to}
-              className="text-white/80 transition hover:text-brand-secondary focus:outline-none focus-visible:text-brand-secondary focus-visible:underline"
+              className="text-gray-700 transition hover:text-brand-primary focus:outline-none focus-visible:text-brand-primary focus-visible:underline"
             >
-              {link.label}
+              {t.footer[link.labelKey]}
             </Link>
           </li>
         ))}
@@ -191,19 +312,33 @@ function FooterColumn({ title, links }) {
   );
 }
 
-/* ---------- Inline icons ---------- */
+/* ---------- Social ---------- */
+function SocialLink({ href, label, icon }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 text-gray-600 transition hover:border-brand-primary hover:bg-brand-primary hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+    >
+      {icon}
+    </a>
+  );
+}
+
+/* ---------- Icons ---------- */
 function MailIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-secondary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-primary">
       <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.8" />
       <path d="M3 7l9 6 9-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
 }
-
 function PhoneIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-secondary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-primary">
       <path
         d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.5 2.1L8 10a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.5c.9.3 1.9.6 2.9.7a2 2 0 011.7 2z"
         stroke="currentColor"
@@ -213,16 +348,35 @@ function PhoneIcon() {
     </svg>
   );
 }
-
 function PinIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-secondary">
-      <path
-        d="M12 22s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-primary">
+      <path d="M12 22s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z" stroke="currentColor" strokeWidth="1.8" />
       <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+function WhatsAppIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M20.5 3.5A11.9 11.9 0 003.4 20.6L2 22l1.4-1.4A11.9 11.9 0 1020.5 3.5zM12 20a8 8 0 01-4.1-1.1l-.3-.2-2.4.6.6-2.3-.2-.4A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1-.7-.3-1.4-.6-2-1.4-.5-.6-.8-1.3-.9-1.6 0-.1.1-.3.2-.4l.4-.5c.1-.1.1-.3 0-.4l-.7-1.6c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1 0 1.2.9 2.4 1 2.6.1.2 1.7 2.7 4.2 3.8.6.3 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.1-.4-.2z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+function FacebookIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z" fill="currentColor" />
+    </svg>
+  );
+}
+function XIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M18.9 2H22l-7.2 8.2L23 22h-6.6l-5.2-6.7L5.3 22H2.2l7.7-8.8L1.5 2h6.8l4.7 6.2L18.9 2zm-1.1 18h1.8L7.3 3.8H5.4L17.8 20z" fill="currentColor" />
     </svg>
   );
 }

@@ -1,142 +1,173 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { useLanguage } from "../context/LanguageContext";
+import { LANGUAGES } from "../i18n/translations";
 
-// Always visible on desktop
 const PRIMARY_LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/maternal", label: "Maternal Care" },
-  { to: "/baby", label: "Baby Care" },
-  { to: "/mental-health", label: "Mental Health" },
-  { to: "/facilities", label: "Facilities" },
-  { to: "/appointments", label: "Appointments" },
+  { to: "/", labelKey: "home" },
+  { to: "/maternal", labelKey: "maternal" },
+  { to: "/baby", labelKey: "baby" },
+  { to: "/mental-health", labelKey: "mentalHealth" },
+  { to: "/facilities", labelKey: "facilities" },
+  { to: "/appointments", labelKey: "appointments" },
 ];
 
-// Overflow dropdown on desktop, full list on mobile
 const MORE_LINKS = [
-  { to: "/health-info", label: "Health Info" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+  { to: "/health-info", labelKey: "healthInfo" },
+  { to: "/programs", labelKey: "programs" },
+  { to: "/community", labelKey: "community" },
+  { to: "/impact", labelKey: "impact" },
+  { to: "/about", labelKey: "about" },
+  { to: "/contact", labelKey: "contact" },
 ];
 
-const LANGUAGES = [
-  { code: "en", label: "EN" },
-  { code: "sw", label: "SW" },
-  { code: "so", label: "SO" },
-];
-
-export default function Navbar({ language = "en", onLanguageChange = () => {} }) {
+export default function Navbar() {
+  const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-brand-primary shadow-md">
-      <nav
-        className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8"
-        aria-label="Main navigation"
-      >
-        <Link to="/" className="flex items-center" aria-label="AfyaLink home">
-          <img src={logo} alt="AfyaLink" className="h-9 w-auto object-contain" />
-        </Link>
-
-        {/* Desktop links — primary + More dropdown */}
-        <ul className="hidden items-center gap-1 lg:flex">
-          {PRIMARY_LINKS.map((link) => (
-            <li key={link.to}>
-              <NavLink
-                to={link.to}
-                className={({ isActive }) =>
-                  [
-                    "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary",
-                    isActive
-                      ? "bg-white/10 text-brand-secondary"
-                      : "text-white hover:bg-white/5 hover:text-brand-secondary",
-                  ].join(" ")
-                }
-              >
-                {link.label}
-              </NavLink>
-            </li>
-          ))}
-          <li>
-            <MoreMenu />
-          </li>
-        </ul>
-
-        {/* Desktop right side */}
-        <div className="hidden items-center gap-3 lg:flex">
-          <LanguageSwitcher current={language} onChange={onLanguageChange} />
-          <Link
-            to="/login"
-            className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-brand-primary transition hover:bg-brand-secondary hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
-          >
-            Log in
-          </Link>
-        </div>
-
-        {/* Mobile controls */}
-        <div className="flex items-center gap-2 lg:hidden">
-          <LanguageSwitcher current={language} onChange={onLanguageChange} compact />
-          <button
-            type="button"
-            onClick={() => setMobileOpen((v) => !v)}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
-            aria-label="Toggle menu"
-            className="rounded-md p-2 text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
-          >
-            {mobileOpen ? <CloseIcon /> : <MenuIcon />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile menu — shows ALL links */}
-      {mobileOpen && (
-        <div
-          id="mobile-menu"
-          className="border-t border-white/10 bg-brand-primary px-4 pb-4 pt-2 lg:hidden"
+    <header className="sticky top-0 z-50 w-full bg-brand-primary">
+      {/* Top info bar — phone + email */}
+      <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-between gap-1 px-4 py-2 text-xs text-white sm:flex-row sm:px-6 lg:px-8">
+        <a
+          href="tel:+254700123456"
+          className="flex items-center gap-2 font-medium whitespace-nowrap transition hover:text-brand-secondary focus:outline-none focus-visible:text-brand-secondary focus-visible:underline"
         >
-          <ul className="flex flex-col gap-1">
-            {[...PRIMARY_LINKS, ...MORE_LINKS].map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={({ isActive }) =>
-                    [
-                      "block rounded-md px-3 py-2 text-base font-medium",
-                      isActive
-                        ? "bg-white/10 text-brand-secondary"
-                        : "text-white hover:bg-white/5 hover:text-brand-secondary",
-                    ].join(" ")
-                  }
-                >
-                  {link.label}
-                </NavLink>
+          <PhoneIcon />
+          <span>+254 700 123 456</span>
+        </a>
+
+        <a
+          href="mailto:info@afya.org"
+          className="hidden items-center gap-2 font-medium whitespace-nowrap transition hover:text-brand-secondary focus:outline-none focus-visible:text-brand-secondary focus-visible:underline sm:flex"
+        >
+          <MailIcon />
+          <span>info@afya.org</span>
+        </a>
+      </div>
+
+      {/* Rounded white navbar pill on teal */}
+      <div className="mx-auto max-w-screen-2xl px-4 py-2 sm:px-6 lg:px-8">
+        <nav
+          className="rounded-[10px] border-b-4 border-brand-secondary bg-white shadow-md"
+          aria-label={t.nav.mainNavigation}
+        >
+          <div className="flex items-center justify-between gap-2 px-4 py-3 sm:px-6">
+            {/* Logo — shrink-0 so it never squishes */}
+            <Link
+              to="/"
+              className="flex shrink-0 items-center"
+              aria-label={t.nav.homeAria}
+            >
+              <img
+                src={logo}
+                alt="AfyaLink"
+                className="h-9 w-auto object-contain"
+              />
+            </Link>
+
+            {/* Desktop links — nowrap prevents wrapping */}
+            <ul className="hidden items-center gap-1 lg:flex">
+              {PRIMARY_LINKS.map((link) => (
+                <li key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    className={({ isActive }) =>
+                      [
+                        "whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary",
+                        isActive
+                          ? "bg-brand-secondary/10 font-semibold text-brand-primary"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-brand-primary",
+                      ].join(" ")
+                    }
+                  >
+                    {t.nav[link.labelKey]}
+                  </NavLink>
+                </li>
+              ))}
+              <li>
+                <MoreMenu />
               </li>
-            ))}
-            <li className="pt-2">
+            </ul>
+
+            {/* Desktop right side — shrink-0 so lang + login never squish */}
+            <div className="hidden shrink-0 items-center gap-3 lg:flex">
+              <LanguageSwitcher />
               <Link
                 to="/login"
-                onClick={() => setMobileOpen(false)}
-                className="block rounded-md bg-white px-3 py-2 text-center text-base font-semibold text-brand-primary hover:bg-brand-secondary hover:text-white"
+                className="whitespace-nowrap rounded-md bg-brand-primary px-6 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
               >
-                Log in
+                {t.nav.login}
               </Link>
-            </li>
-          </ul>
-        </div>
-      )}
+            </div>
+
+            {/* Mobile controls */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <LanguageSwitcher compact />
+              <button
+                type="button"
+                onClick={() => setMobileOpen((v) => !v)}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-menu"
+                aria-label={t.nav.toggleMenu}
+                className="rounded-md p-2 text-brand-primary hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+              >
+                {mobileOpen ? <CloseIcon /> : <MenuIcon />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile menu */}
+          {mobileOpen && (
+            <div
+              id="mobile-menu"
+              className="border-t border-gray-200 px-4 pb-4 pt-2 sm:px-6 lg:hidden"
+            >
+              <ul className="flex flex-col gap-1">
+                {[...PRIMARY_LINKS, ...MORE_LINKS].map((link) => (
+                  <li key={link.to}>
+                    <NavLink
+                      to={link.to}
+                      onClick={() => setMobileOpen(false)}
+                      className={({ isActive }) =>
+                        [
+                          "block rounded-md px-3 py-2 text-base font-medium",
+                          isActive
+                            ? "bg-brand-secondary/10 font-semibold text-brand-primary"
+                            : "text-gray-700 hover:bg-gray-50 hover:text-brand-primary",
+                        ].join(" ")
+                      }
+                    >
+                      {t.nav[link.labelKey]}
+                    </NavLink>
+                  </li>
+                ))}
+                <li className="pt-2">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-md bg-brand-primary px-3 py-2 text-center text-base font-semibold text-white hover:bg-brand-secondary"
+                  >
+                    {t.nav.login}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
+        </nav>
+      </div>
     </header>
   );
 }
 
-/* ---------- "More" dropdown (desktop only) ---------- */
+/* ---------- More dropdown ---------- */
 function MoreMenu() {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
-  // Close when clicking outside
   useEffect(() => {
     function onClick(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -159,9 +190,9 @@ function MoreMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
         aria-expanded={open}
-        className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-white/5 hover:text-brand-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+        className="flex items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-brand-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
       >
-        More
+        {t.nav.more}
         <svg
           width="14"
           height="14"
@@ -175,7 +206,7 @@ function MoreMenu() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-48 rounded-lg border border-white/10 bg-white py-1 shadow-xl">
+        <div className="absolute right-0 mt-2 w-52 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
           {MORE_LINKS.map((link) => (
             <NavLink
               key={link.to}
@@ -183,14 +214,14 @@ function MoreMenu() {
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 [
-                  "block px-4 py-2 text-sm font-medium transition-colors",
+                  "block whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-brand-secondary/10 text-brand-primary"
+                    ? "bg-brand-secondary/10 font-semibold text-brand-primary"
                     : "text-gray-700 hover:bg-brand-secondary/10 hover:text-brand-primary",
                 ].join(" ")
               }
             >
-              {link.label}
+              {t.nav[link.labelKey]}
             </NavLink>
           ))}
         </div>
@@ -200,26 +231,29 @@ function MoreMenu() {
 }
 
 /* ---------- Language switcher ---------- */
-function LanguageSwitcher({ current, onChange, compact = false }) {
+function LanguageSwitcher({ compact = false }) {
+  const { language, setLanguage, t } = useLanguage();
+
   return (
     <div
       role="group"
-      aria-label="Language switcher"
-      className="flex items-center overflow-hidden rounded-md border border-white/30"
+      aria-label={t.nav.languageSwitcher}
+      className="flex shrink-0 items-center overflow-hidden rounded-md border border-gray-300"
     >
       {LANGUAGES.map((lang) => {
-        const active = current === lang.code;
+        const active = language === lang.code;
         return (
           <button
             key={lang.code}
             type="button"
-            onClick={() => onChange(lang.code)}
+            onClick={() => setLanguage(lang.code)}
             aria-pressed={active}
+            aria-label={lang.name}
             className={[
-              "px-2.5 py-1.5 text-xs font-semibold transition",
+              "whitespace-nowrap px-2.5 py-1.5 text-xs font-semibold transition",
               active
                 ? "bg-brand-secondary text-white"
-                : "bg-transparent text-white hover:bg-white/10",
+                : "bg-transparent text-brand-primary hover:bg-brand-secondary/10",
               compact ? "" : "sm:text-sm",
             ].join(" ")}
           >
@@ -231,6 +265,7 @@ function LanguageSwitcher({ current, onChange, compact = false }) {
   );
 }
 
+/* ---------- Icons ---------- */
 function MenuIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -238,11 +273,30 @@ function MenuIcon() {
     </svg>
   );
 }
-
 function CloseIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+function PhoneIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-secondary">
+      <path
+        d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.5 2.1L8 10a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.5c.9.3 1.9.6 2.9.7a2 2 0 011.7 2z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function MailIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-brand-secondary">
+      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M3 7l9 6 9-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
 }
