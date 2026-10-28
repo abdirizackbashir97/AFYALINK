@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -20,9 +21,13 @@ import Register from "./pages/Register";
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-white text-gray-900">
+    // Added w-full and overflow-x-hidden to the main wrapper
+    <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-white text-gray-900">
+      
       <Navbar />
-      <main className="flex-1">
+      
+      {/* Added w-full and overflow-x-hidden to the main content area */}
+      <main className="flex-1 w-full overflow-x-hidden">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/maternal" element={<MaternalCare />} />
@@ -40,7 +45,9 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </main>
+      
       <Footer />
+      
     </div>
   );
 }
