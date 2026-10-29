@@ -1,9 +1,22 @@
 import React from "react";
+import Hero from "../components/About/Hero";
+import WhyMatters from "../components/About/WhyMatters";
+import CareCards from "../components/About/CareCards";
+import WhoWeServe from "../components/About/WhoWeServe";
+import HowItWorks from "../components/About/HowItWorks";
+import Commitment from "../components/About/Commitment";
+import FinalCTA from "../components/About/FinalCTA";
+
 export default function About() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-brand-primary">About AfyaLink</h1>
-      <p className="mt-2 text-gray-600">Community health support for Northeastern Kenya. Content coming soon.</p>
-    </section>
+    <div className="bg-white overflow-x-hidden">
+      <Hero />
+      <WhyMatters />
+      <CareCards />
+      <WhoWeServe />
+      <HowItWorks />
+      <Commitment />
+      <FinalCTA />
+    </div>
   );
 }

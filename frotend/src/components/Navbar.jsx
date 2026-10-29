@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useLanguage } from "../context/LanguageContext";
 import { LANGUAGES } from "../i18n/translations";
@@ -18,13 +18,19 @@ const MORE_LINKS = [
   { to: "/programs", labelKey: "programs" },
   { to: "/community", labelKey: "community" },
   { to: "/impact", labelKey: "impact" },
-  { to: "/about", labelKey: "about" },
   { to: "/contact", labelKey: "contact" },
+];
+
+const ABOUT_LINKS = [
+  { to: "/about", labelKey: "aboutMain", defaultLabel: "About AfyaLink" },
+  { to: "/about/who-we-are", labelKey: "whoWeAre", defaultLabel: "Who We Are" },
+  { to: "/about/our-team", labelKey: "ourTeam", defaultLabel: "Our Team" },
 ];
 
 export default function Navbar() {
   const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -43,9 +49,13 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
   return (
     <>
-      {/* Changed to fixed, z-[9999] ensures it stays above everything */}
       <header className="fixed inset-x-0 top-0 z-[9999] w-full">
         {/* Top info bar */}
         <div className="bg-brand-primary">
@@ -110,6 +120,9 @@ export default function Navbar() {
                     </li>
                   ))}
                   <li>
+                    <AboutDropdown />
+                  </li>
+                  <li>
                     <MoreMenu />
                   </li>
                 </ul>
@@ -141,14 +154,14 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Mobile menu — scrollable when tall */}
+              {/* Mobile menu */}
               {mobileOpen && (
                 <div
                   id="mobile-menu"
-                  className="max-h-[70vh] overflow-y-auto border-t border-gray-200 px-2 pb-3 pt-1.5 sm:px-4 sm:pb-4 sm:pt-2 lg:hidden"
+                  className="max-h-[70vh] overflow-y-auto border-t border-gray-200 px-2 pb-3 pt-1.5 sm:px-4 sm:pb-4 sm:pt-2 lg:hidden text-gray-900"
                 >
                   <ul className="flex flex-col gap-0.5">
-                    {[...PRIMARY_LINKS, ...MORE_LINKS].map((link) => (
+                    {[...PRIMARY_LINKS, ...ABOUT_LINKS, ...MORE_LINKS].map((link) => (
                       <li key={link.to}>
                         <NavLink
                           to={link.to}
@@ -162,7 +175,8 @@ export default function Navbar() {
                             ].join(" ")
                           }
                         >
-                          {t.nav[link.labelKey]}
+                          {/* Fallback ensures text is never blank */}
+                          {t.about?.[link.labelKey] || t.nav[link.labelKey] || link.defaultLabel}
                         </NavLink>
                       </li>
                     ))}
@@ -183,16 +197,92 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* 
-        This spacer prevents the page content from hiding behind the fixed navbar. 
-        It perfectly matches the height of the top bar + white pill nav.
-      */}
+      {/* Spacer to prevent content from hiding behind fixed navbar */}
       <div className="h-[88px] sm:h-[100px] lg:h-[108px]" aria-hidden="true" />
     </>
   );
 }
 
-/* ---------- More dropdown ---------- */
+/* ---------- About Dropdown ---------- */
+function AboutDropdown() {
+  const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const location = useLocation();
+
+  const isActive = location.pathname.startsWith("/about");
+
+  useEffect(() => {
+    function onClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    function onKey(e) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="true"
+        aria-expanded={open}
+        className={[
+          "flex items-center gap-1 whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors xl:px-3",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary",
+          isActive
+            ? "bg-brand-secondary/10 font-semibold text-brand-primary"
+            : "text-gray-700 hover:bg-gray-50 hover:text-brand-primary",
+        ].join(" ")}
+      >
+        {t.nav.about}
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+          className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        >
+          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="absolute left-0 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg text-gray-900">
+          {ABOUT_LINKS.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === "/about"}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                [
+                  "block px-4 py-2 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-brand-secondary/10 font-semibold text-brand-primary"
+                    : "text-gray-700 hover:bg-brand-secondary/10 hover:text-brand-primary",
+                ].join(" ")
+              }
+            >
+              {/* Reads from t.about (where we put the translations), falls back to English if missing */}
+              {t.about?.[link.labelKey] || link.defaultLabel}
+            </NavLink>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- More Dropdown ---------- */
 function MoreMenu() {
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
@@ -229,14 +319,14 @@ function MoreMenu() {
           viewBox="0 0 24 24"
           fill="none"
           aria-hidden="true"
-          className={`transition-transform ${open ? "rotate-180" : ""}`}
+          className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
         >
           <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-52 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+        <div className="absolute right-0 mt-2 w-52 rounded-lg border border-gray-200 bg-white py-1 shadow-lg text-gray-900">
           {MORE_LINKS.map((link) => (
             <NavLink
               key={link.to}

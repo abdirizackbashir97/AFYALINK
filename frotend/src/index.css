@@ -22,3 +22,30 @@ body {
   overflow-x: hidden;
   width: 100%;
 }
+
+/* =========================================
+   Hero Line Animation: Multi-Color Pulse
+   ========================================= */
+@keyframes brand-color-pulse {
+  0%, 100% {
+    background-color: #064E3B; /* Dark Green */
+    box-shadow: 0 0 15px #064E3B;
+  }
+  25% {
+    background-color: #A16207; /* Dark Yellow */
+    box-shadow: 0 0 20px #A16207;
+  }
+  50% {
+    background-color: #1D4ED8; /* Blue */
+    box-shadow: 0 0 25px #1D4ED8;
+  }
+  75% {
+    background-color: #B91C1C; /* Red */
+    box-shadow: 0 0 25px #B91C1C;
+  }
+}
+
+/* Class to apply the animation to the divider line */
+.animate-brand-line {
+  animation: brand-color-pulse 6s ease-in-out infinite;
+}
