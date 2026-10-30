@@ -2,295 +2,617 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 
+/* ============ Section Label ============ */
+function SectionLabel({ number, label, inverted = false }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span
+        className={`flex h-7 items-center justify-center rounded-full px-2.5 text-[10px] font-black tracking-[0.15em] ${
+          inverted ? "bg-white/20 text-white" : "bg-slate-900 text-white"
+        }`}
+      >
+        {number}
+      </span>
+      <span
+        className={`text-[10px] font-bold uppercase tracking-[0.22em] ${
+          inverted ? "text-emerald-100/90" : "text-slate-500"
+        }`}
+      >
+        {label}
+      </span>
+      <span className={`h-px w-8 ${inverted ? "bg-white/30" : "bg-slate-300"}`} aria-hidden="true" />
+    </div>
+  );
+}
+
+/* ============ Icon Set ============ */
+const ICONS = {
+  graduation: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 10L12 5 2 10l10 5 10-5z" />
+      <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
+    </svg>
+  ),
+  briefcase: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+      <path d="M3 13h18" />
+    </svg>
+  ),
+  book: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6.5A2.5 2.5 0 0 0 4 22V5.5z" />
+      <path d="M8 7h7" /><path d="M8 11h7" /><path d="M8 15h4" />
+    </svg>
+  ),
+  heart: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+    </svg>
+  ),
+  spark: (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2l2.4 7.6H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.5 2.4-7.4L2 9.6h7.6z" />
+    </svg>
+  ),
+  arrow: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h14" /><path d="M13 6l6 6-6 6" />
+    </svg>
+  ),
+  users: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  ),
+  bolt: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
+    </svg>
+  ),
+};
+
 export default function OurTeam() {
   const { t } = useLanguage();
   const tm = t.about?.ourTeamPage || {};
 
+  /* -------- Team Members — text now fully translated -------- */
   const teamMembers = [
     {
       id: 1,
-      name: "Abdilatif", 
-      role: "Lead Developer & UI/UX Designer", 
-      image: "/team/image1.jpeg", 
+      name: "Abdirizack Bashor",
+      initials: "AB",
+      image: "/team/image1.jpeg",
       position: "object-center",
-      education: "BSc in Computer Science (Final Year)",
-      experience: "3+ years building web applications and digital solutions.",
-      background: "Growing up in Northeastern Kenya, I witnessed firsthand the challenges families face in accessing basic health information. This inspired me to use technology to bridge that gap.",
-      impact: "Designed and built the AfyaLink platform from scratch. Solved the problem of fragmented health information by creating a centralized, multilingual hub.",
-      funFact: "Seeing a mother successfully use the platform in Somali to book her antenatal appointment."
+      accent: "from-emerald-500 via-teal-500 to-cyan-500",
+      role: tm.member1Role || "Medical Researcher & Cybersecurity Professional",
+      education: tm.member1Education || "MSc in Medical Research · Cybersecurity Certification",
+      experience: tm.member1Experience || "Bridging clinical research and secure digital health systems for underserved communities.",
+      background: tm.member1Background || "Growing up in Northeastern Kenya, I saw how health information — even when available — rarely reached families in a form they could trust. That gap is what AfyaLink exists to close.",
+      impact: tm.member1Impact || "Ensures every article is medically sound and every user's data is privacy-protected — two promises that shape the entire platform.",
+      funFact: tm.member1FunFact || "Watching a mother navigate AfyaLink in Somali and reach the right clinic within minutes.",
     },
     {
       id: 2,
-      name: "Dr. Amina Hassan", 
-      role: "Medical Advisor", 
+      name: "Dr. Amina Hassan",
+      initials: "AH",
       image: "/team/image2.png",
-      position: "object-center", 
-      education: "MBBS, University of Nairobi",
-      experience: "8 years in public health and maternal care in Garissa County.",
-      background: "With a deep passion for maternal health, I have spent my career working in rural clinics to ensure safe deliveries.",
-      impact: "Reviewed all medical content on the platform to ensure it meets health standards. Solved the problem of misinformation by providing trusted, evidence-based guidance.",
-      funFact: "Educating young mothers on the importance of postnatal check-ups."
+      position: "object-center",
+      accent: "from-teal-500 via-cyan-500 to-sky-500",
+      role: tm.member2Role || "Medical Advisor",
+      education: tm.member2Education || "MBBS, University of Nairobi",
+      experience: tm.member2Experience || "8 years in public health and maternal care in Garissa County.",
+      background: tm.member2Background || "With a deep passion for maternal health, I have spent my career working in rural clinics to ensure safe deliveries.",
+      impact: tm.member2Impact || "Reviewed all medical content on the platform to ensure it meets health standards.",
+      funFact: tm.member2FunFact || "Educating young mothers on the importance of postnatal check-ups.",
     },
     {
       id: 3,
-      name: "Yusuf Ahmed", 
-      role: "Community Liaison", 
+      name: "Yasmin Osman",
+      initials: "YO",
       image: "/team/image3.png",
-      position: "object-top", 
-      education: "Diploma in Community Health",
-      experience: "5 years as a Community Health Worker (CHW) in Dadaab.",
-      background: "I have dedicated my life to serving my community and ensuring no family is left behind due to language or location.",
-      impact: "Translated the entire platform into Somali and Kiswahili. Solved the language barrier by making vital health information accessible to locals.",
-      funFact: "Training elderly community members on how to navigate the mobile interface."
+      position: "object-top",
+      accent: "from-lime-500 via-emerald-500 to-teal-500",
+      role: tm.member3Role || "Community Liaison",
+      education: tm.member3Education || "Diploma in Community Health",
+      experience: tm.member3Experience || "5 years as a Community Health Worker (CHW) in Dadaab.",
+      background: tm.member3Background || "I have dedicated my life to serving my community and ensuring no family is left behind.",
+      impact: tm.member3Impact || "Translated the entire platform into Somali and Kiswahili.",
+      funFact: tm.member3FunFact || "Training elderly community members on how to navigate the mobile interface.",
     },
     {
       id: 4,
-      name: "Hodan Ali", 
-      role: "Maternal Health Specialist", 
+      name: "Mohamed Abdirahi",
+      initials: "MA",
       image: "/team/image4.png",
-      position: "object-top", 
-      education: "MSc in Public Health",
-      experience: "6 years coordinating maternal health programs.",
-      background: "I grew up in a family of nurses and always knew I wanted to help mothers.",
-      impact: "Developed the maternal care guides and checklists used on the platform.",
-      funFact: "Visiting clinics and listening to the stories of mothers."
+      position: "object-top",
+      accent: "from-cyan-500 via-sky-500 to-teal-500",
+      role: tm.member4Role || "Maternal Health Specialist",
+      education: tm.member4Education || "MSc in Public Health",
+      experience: tm.member4Experience || "6 years coordinating maternal health programs.",
+      background: tm.member4Background || "I grew up in a family of nurses and always knew I wanted to help mothers.",
+      impact: tm.member4Impact || "Developed the maternal care guides and checklists used on the platform.",
+      funFact: tm.member4FunFact || "Visiting clinics and listening to the stories of mothers.",
     },
     {
       id: 5,
-      name: "Khalid Omar", 
-      role: "Data & Research Officer", 
+      name: "Khalid Omar",
+      initials: "KO",
       image: "/team/image5.png",
-      position: "object-center", 
-      education: "BSc in Statistics",
-      experience: "4 years analyzing community health data.",
-      background: "I believe that data tells the real story of what a community needs.",
-      impact: "Collected and analyzed the data that shaped our platform's features and facility directories.",
-      funFact: "Turning complex data into simple, visual insights."
+      position: "object-center",
+      accent: "from-emerald-500 via-teal-500 to-cyan-500",
+      role: tm.member5Role || "Data & Research Officer",
+      education: tm.member5Education || "BSc in Statistics",
+      experience: tm.member5Experience || "4 years analyzing community health data.",
+      background: tm.member5Background || "I believe that data tells the real story of what a community needs.",
+      impact: tm.member5Impact || "Collected and analyzed the data that shaped our platform's features.",
+      funFact: tm.member5FunFact || "Turning complex data into simple, visual insights.",
     },
     {
       id: 6,
-      name: "Fatuma Noor", 
-      role: "Content Creator & Translator", 
+      name: "James Garace",
+      initials: "JG",
       image: "/team/image6.png",
-      position: "object-top", 
-      education: "BA in Linguistics",
-      experience: "3 years of professional translation and community writing.",
-      background: "Language is the bridge to trust, and I want every mother to feel understood.",
-      impact: "Wrote and translated the health tips and articles into clear, simple Kiswahili and Somali.",
-      funFact: "Reading feedback from users who finally understand their health conditions."
+      position: "object-top",
+      accent: "from-teal-500 via-cyan-500 to-sky-500",
+      role: tm.member6Role || "Content Creator & Translator",
+      education: tm.member6Education || "BA in Linguistics",
+      experience: tm.member6Experience || "3 years of professional translation and community writing.",
+      background: tm.member6Background || "Language is the bridge to trust, and I want every mother to feel understood.",
+      impact: tm.member6Impact || "Wrote and translated the health tips and articles into clear, simple Kiswahili and Somali.",
+      funFact: tm.member6FunFact || "Reading feedback from users who finally understand their health conditions.",
     },
     {
       id: 7,
-      name: "Said Abdi", 
-      role: "Community Outreach Volunteer", 
+      name: "Olivia Kamau",
+      initials: "OK",
       image: "/team/image7.png",
-      position: "object-center", 
-      education: "Certificate in Social Work",
-      experience: "2 years volunteering in local health campaigns.",
-      background: "Giving back to my community is the most rewarding thing I do.",
-      impact: "Organized community awareness sessions to teach families how to use AfyaLink.",
-      funFact: "Seeing the excitement on people's faces when they realize the app is free."
-    }
+      position: "object-center",
+      accent: "from-lime-500 via-emerald-500 to-teal-500",
+      role: tm.member7Role || "Community Outreach Volunteer",
+      education: tm.member7Education || "Certificate in Social Work",
+      experience: tm.member7Experience || "2 years volunteering in local health campaigns.",
+      background: tm.member7Background || "Giving back to my community is the most rewarding thing I do.",
+      impact: tm.member7Impact || "Organized community awareness sessions to teach families how to use AfyaLink.",
+      funFact: tm.member7FunFact || "Seeing the excitement on people's faces when they realize the app is free.",
+    },
+  ];
+
+  const culturePoints = [
+    {
+      title: tm.culture1Title || "Agile Development",
+      desc: tm.culture1Desc || "We build, test, and improve rapidly. We listen to community feedback and update the platform continuously to meet real needs.",
+      Icon: ICONS.bolt,
+      accent: "from-emerald-500 via-teal-500 to-cyan-500",
+      glow: "bg-emerald-400/40",
+    },
+    {
+      title: tm.culture2Title || "Community-First",
+      desc: tm.culture2Desc || "Technology means nothing if it doesn't help people. Every feature we design is centered around the mothers and families of Northeastern Kenya.",
+      Icon: ICONS.users,
+      accent: "from-teal-500 via-cyan-500 to-sky-500",
+      glow: "bg-teal-400/40",
+    },
+    {
+      title: tm.culture3Title || "Continuous Learning",
+      desc: tm.culture3Desc || "We are always researching, reading, and learning from experts to ensure the health information we provide is accurate and up-to-date.",
+      Icon: ICONS.book,
+      accent: "from-lime-500 via-emerald-500 to-teal-500",
+      glow: "bg-lime-400/40",
+    },
+  ];
+
+  const advisors = [
+    {
+      initial: "U",
+      title: tm.advisor1Title || "University Supervisor",
+      role: tm.advisor1Role || "Academic Advisor",
+      desc: tm.advisor1Desc || "Provided invaluable guidance on project methodology, evaluation, and technical architecture.",
+      accent: "from-emerald-500 via-teal-500 to-cyan-500",
+    },
+    {
+      initial: "C",
+      title: tm.advisor2Title || "Community Health Board",
+      role: tm.advisor2Role || "Local Partners",
+      desc: tm.advisor2Desc || "Ensured our health content is culturally appropriate and aligned with local healthcare guidelines.",
+      accent: "from-teal-500 via-cyan-500 to-sky-500",
+    },
   ];
 
   return (
-    <div className="bg-gray-50/50 min-h-screen py-16 sm:py-24 overflow-x-hidden">
-      <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
-        
-        {/* ============ HEADER ============ */}
-        <div className="text-center max-w-3xl mx-auto mb-20 sm:mb-28">
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand-secondary/20 bg-white px-4 py-2 shadow-sm mb-6">
-            <span className="flex h-2 w-2 rounded-full bg-brand-secondary animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-primary">
-              {t.about?.whoWeAre || "About AfyaLink"}
-            </span>
-          </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-            {tm.teamTitle || "Meet Our Team"}
-          </h1>
-          <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-            {tm.teamSubtitle || "Dedicated professionals working to transform community health."}
-          </p>
+    <div className="overflow-x-hidden bg-white">
+
+      {/* ═══════════════ HERO ═══════════════ */}
+      <section className="relative overflow-hidden bg-white py-20 sm:py-28 lg:py-32">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/80 via-white to-white" />
+          <div className="absolute -top-40 -left-32 h-[28rem] w-[28rem] rounded-full bg-emerald-200/40 blur-3xl" />
+          <div className="absolute top-1/3 -right-32 h-[28rem] w-[28rem] rounded-full bg-teal-200/40 blur-3xl" />
         </div>
 
-        {/* ============ TEAM PROFILES ============ */}
-        <div className="space-y-24 mb-32">
-          {teamMembers.map((member, index) => {
-            const isEven = index % 2 === 0;
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-700 shadow-sm backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            {t.about?.whoWeAre || "About AfyaLink"}
+          </span>
 
-            return (
-              <div key={member.id} className="relative">
-                <div className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-20 ${isEven ? "" : "lg:flex-row-reverse"}`}>
-                  
-                  {/* ROUND IMAGE COLUMN */}
-                  <div className="relative w-full lg:w-1/2 flex justify-center shrink-0">
-                    <div className={`absolute top-1/2 left-1/2 -translate-y-1/2 w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-brand-secondary/10 ${isEven ? "-translate-x-[45%]" : "-translate-x-[55%]"}`} />
-                    
-                    <div className="relative overflow-hidden rounded-full border-4 border-white shadow-2xl aspect-square w-[280px] sm:w-[350px] bg-gray-200 z-10">
-                      <img 
-                        src={member.image} 
-                        alt={member.name} 
-                        className={`h-full w-full object-cover transition-transform duration-700 hover:scale-110 ${member.position}`} 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                      
-                      <div className="absolute bottom-8 left-0 right-0 text-center px-4">
-                        <h3 className="text-2xl font-bold text-white">{member.name}</h3>
-                        <p className="text-brand-secondary font-semibold text-sm">{member.role}</p>
+          <h1 className="mt-6 text-5xl font-black leading-[1.02] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
+            {tm.teamTitle || "Meet Our Team"}
+          </h1>
+
+          <div className="mx-auto mt-6 flex items-center justify-center gap-1.5">
+            <span className="h-1 w-12 rounded-full bg-emerald-500" />
+            <span className="h-1 w-6 rounded-full bg-teal-400" />
+            <span className="h-1 w-3 rounded-full bg-lime-400" />
+          </div>
+
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl">
+            {tm.teamSubtitle || "Dedicated professionals working to transform community health."}
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+            <span className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              {teamMembers.length} Team Members
+            </span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <span className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+              3 Languages
+            </span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <span className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-lime-500" />
+              One Mission
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════ TEAM PROFILES ═══════════════ */}
+      <section className="relative overflow-hidden bg-slate-50/70 py-24 sm:py-32">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute -top-32 left-1/4 h-96 w-96 rounded-full bg-emerald-100/60 blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-teal-100/60 blur-3xl" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="space-y-20 sm:space-y-28">
+            {teamMembers.map((member, index) => {
+              const isEven = index % 2 === 0;
+              return (
+                <article key={member.id} className="group relative">
+                  <div
+                    className={`flex flex-col items-center gap-12 lg:flex-row lg:gap-20 ${
+                      isEven ? "" : "lg:flex-row-reverse"
+                    }`}
+                  >
+                    {/* IMAGE COLUMN */}
+                    <div className="relative w-full shrink-0 lg:w-5/12">
+                      <div className="relative mx-auto max-w-md">
+                        <div
+                          className={`absolute inset-0 rounded-[2.5rem] bg-gradient-to-br ${member.accent} opacity-15 blur-2xl transition-opacity duration-700 group-hover:opacity-30`}
+                          aria-hidden="true"
+                        />
+
+                        <span
+                          className={`absolute -top-3 z-20 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${member.accent} text-lg font-black tracking-tight text-white shadow-lg shadow-emerald-500/30 ${
+                            isEven ? "-left-3" : "-right-3"
+                          }`}
+                        >
+                          0{index + 1}
+                        </span>
+
+                        <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white shadow-2xl shadow-emerald-900/10">
+                          <img
+                            src={member.image}
+                            alt={member.name}
+                            className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${member.position}`}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/10 to-transparent" aria-hidden="true" />
+
+                          <div className="absolute bottom-6 left-6 right-6">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-200">
+                              {member.role}
+                            </p>
+                            <h3 className="mt-2 text-2xl font-black tracking-tight text-white">
+                              {member.name}
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* TEXT COLUMN */}
+                    <div className="w-full lg:w-7/12">
+                      <SectionLabel number={`0${index + 1}`} label={`Team Member ${index + 1}`} />
+
+                      <h3 className="mt-5 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+                        {member.name}
+                      </h3>
+                      <p className="mt-2 text-sm font-bold uppercase tracking-[0.15em] text-emerald-700">
+                        {member.role}
+                      </p>
+
+                      <div className="mt-6 flex items-center gap-2">
+                        <span className={`h-1 w-10 rounded-full bg-gradient-to-r ${member.accent}`} />
+                        <span className="h-1 w-3 rounded-full bg-slate-200" />
+                        <span className="h-1 w-2 rounded-full bg-slate-200" />
+                      </div>
+
+                      <div className="mt-8 grid gap-5 sm:grid-cols-2">
+                        <DetailBlock
+                          Icon={ICONS.graduation}
+                          label={tm.educationLabel || "Education"}
+                          value={member.education}
+                        />
+                        <DetailBlock
+                          Icon={ICONS.briefcase}
+                          label={tm.experienceLabel || "Experience"}
+                          value={member.experience}
+                        />
+                      </div>
+
+                      <div className="mt-6 rounded-2xl border-l-4 border-emerald-500 bg-white p-5 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+                            <span className="h-4 w-4">{ICONS.book}</span>
+                          </span>
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                              {tm.backgroundLabel || "Life Background"}
+                            </p>
+                            <p className="mt-2 text-sm italic leading-relaxed text-slate-700">
+                              "{member.background}"
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 flex items-start gap-3">
+                        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+                          <span className="h-4 w-4">{ICONS.heart}</span>
+                        </span>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                            {tm.impactLabel || "Community Impact"}
+                          </p>
+                          <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                            {member.impact}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600 ring-1 ring-amber-100">
+                          <span className="h-4 w-4">{ICONS.spark}</span>
+                        </span>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                            {tm.funFactLabel || "Favourite Part of the Job"}
+                          </p>
+                          <p className="mt-1 text-sm text-slate-700">{member.funFact}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* TEXT COLUMN */}
-                  <div className="w-full lg:w-1/2 space-y-6">
-                    <div>
-                      <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-brand-primary mb-2">
-                        <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
-                        {tm.educationLabel || "Education"}
-                      </h4>
-                      <p className="text-gray-600">{member.education}</p>
+                  {index < teamMembers.length - 1 && (
+                    <div className="mt-20 flex items-center gap-2 sm:mt-28" aria-hidden="true">
+                      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+                      <span className="h-1 w-1 rounded-full bg-emerald-400" />
+                      <span className="h-1 w-1 rounded-full bg-teal-400" />
+                      <span className="h-1 w-1 rounded-full bg-lime-400" />
+                      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
                     </div>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-                    <div>
-                      <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-brand-primary mb-2">
-                        <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        {tm.experienceLabel || "Experience"}
-                      </h4>
-                      <p className="text-gray-600">{member.experience}</p>
-                    </div>
-
-                    <div>
-                      <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-brand-primary mb-2">
-                        <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                        {tm.backgroundLabel || "Life Background"}
-                      </h4>
-                      <p className="text-gray-600 leading-relaxed italic border-l-4 border-brand-secondary/30 pl-4 py-1">
-                        "{member.background}"
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-brand-primary mb-2">
-                        <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                        {tm.impactLabel || "Community Impact"}
-                      </h4>
-                      <p className="text-gray-600">{member.impact}</p>
-                    </div>
-
-                    <div className="bg-brand-secondary/5 rounded-2xl p-4 border border-brand-secondary/10">
-                      <h4 className="text-sm font-bold text-brand-primary mb-1">
-                        💡 {tm.funFactLabel || "Favourite Part of the Job"}
-                      </h4>
-                      <p className="text-sm text-gray-600">{member.funFact}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+      {/* ═══════════════ CULTURE ═══════════════ */}
+      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute -top-32 right-1/4 h-96 w-96 rounded-full bg-emerald-100/50 blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-teal-100/50 blur-3xl" />
         </div>
 
-        {/* ============ SECTION 1: HOW WE WORK (CULTURE) ============ */}
-        <section className="bg-white py-20 border-y border-gray-100 mb-24">
-          <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                {tm.cultureTitle || "How We Work Together"}
-              </h2>
-              <p className="mt-4 text-gray-600">
-                {tm.cultureSubtitle || "Our shared methodology for building better health solutions."}
-              </p>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-16 max-w-2xl text-center">
+            <div className="flex justify-center">
+              <SectionLabel number="08" label="How we work" />
             </div>
-
-            <div className="grid gap-8 md:grid-cols-3">
-              {/* Pillar 1 */}
-              <div className="rounded-3xl bg-gray-50 p-8 text-center transition hover:-translate-y-1 hover:shadow-lg">
-                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-primary text-white shadow-lg shadow-brand-primary/30">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">{tm.culture1Title || "Agile Development"}</h3>
-                <p className="mt-3 text-sm text-gray-600">{tm.culture1Desc || "We build, test, and improve rapidly. We listen to community feedback and update the platform continuously to meet real needs."}</p>
-              </div>
-
-              {/* Pillar 2 */}
-              <div className="rounded-3xl bg-gray-50 p-8 text-center transition hover:-translate-y-1 hover:shadow-lg">
-                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-secondary text-white shadow-lg shadow-brand-secondary/30">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">{tm.culture2Title || "Community-First"}</h3>
-                <p className="mt-3 text-sm text-gray-600">{tm.culture2Desc || "Technology means nothing if it doesn't help people. Every feature we design is centered around the mothers and families of Northeastern Kenya."}</p>
-              </div>
-
-              {/* Pillar 3 */}
-              <div className="rounded-3xl bg-gray-50 p-8 text-center transition hover:-translate-y-1 hover:shadow-lg">
-                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-primary text-white shadow-lg shadow-brand-primary/30">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">{tm.culture3Title || "Continuous Learning"}</h3>
-                <p className="mt-3 text-sm text-gray-600">{tm.culture3Desc || "We are always researching, reading, and learning from experts to ensure the health information we provide is accurate and up-to-date."}</p>
-              </div>
+            <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
+              {tm.cultureTitle || "How We Work Together"}
+            </h2>
+            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
+              <span className="h-1 w-12 rounded-full bg-emerald-500" />
+              <span className="h-1 w-6 rounded-full bg-teal-400" />
+              <span className="h-1 w-3 rounded-full bg-lime-400" />
             </div>
+            <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
+              {tm.cultureSubtitle || "Our shared methodology for building better health solutions."}
+            </p>
           </div>
-        </section>
 
-        {/* ============ SECTION 2: ADVISORS & MENTORS ============ */}
-        <section className="mb-24">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+          <div className="grid gap-6 md:grid-cols-3">
+            {culturePoints.map((p, i) => (
+              <article
+                key={i}
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white p-7 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-[0_20px_60px_-15px_rgba(16,185,129,0.35)]"
+              >
+                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${p.accent}`} aria-hidden="true" />
+                <span className={`pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full ${p.glow} opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100`} aria-hidden="true" />
+                <span aria-hidden="true" className="pointer-events-none absolute right-3 top-2 select-none text-[72px] font-black leading-none text-slate-100 transition-colors duration-500 group-hover:text-emerald-100/80">
+                  0{i + 1}
+                </span>
+
+                <div className="relative flex flex-1 flex-col">
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${p.accent} text-white shadow-lg shadow-emerald-500/20 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+                    <span className="h-6 w-6">{p.Icon}</span>
+                  </div>
+                  <h3 className="mt-5 text-lg font-black tracking-tight text-slate-900">
+                    {p.title}
+                  </h3>
+                  <span className={`mt-3 block h-0.5 w-8 rounded-full bg-gradient-to-r ${p.accent} transition-all duration-300 group-hover:w-14`} aria-hidden="true" />
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-[15px]">
+                    {p.desc}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════ ADVISORS ═══════════════ */}
+      <section className="relative overflow-hidden bg-slate-50/70 py-24 sm:py-32">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-emerald-100/60 blur-3xl" />
+          <div className="absolute bottom-0 right-1/3 h-96 w-96 rounded-full bg-teal-100/60 blur-3xl" />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-16 max-w-2xl text-center">
+            <div className="flex justify-center">
+              <SectionLabel number="09" label="Guiding voices" />
+            </div>
+            <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
               {tm.advisorsTitle || "Our Advisors & Mentors"}
             </h2>
-            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
+              <span className="h-1 w-12 rounded-full bg-emerald-500" />
+              <span className="h-1 w-6 rounded-full bg-teal-400" />
+              <span className="h-1 w-3 rounded-full bg-lime-400" />
+            </div>
+            <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
               {tm.advisorsSubtitle || "We are grateful for the guidance of experts who help us maintain the highest standards of health information and project execution."}
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:gap-8 max-w-4xl mx-auto">
-            {/* Advisor 1 */}
-            <div className="flex items-center gap-6 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-2xl font-bold text-brand-primary">
-                U
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">{tm.advisor1Title || "University Supervisor"}</h3>
-                <p className="text-sm font-semibold text-brand-secondary">{tm.advisor1Role || "Academic Advisor"}</p>
-                <p className="mt-2 text-sm text-gray-600">{tm.advisor1Desc || "Provided invaluable guidance on project methodology, evaluation, and technical architecture."}</p>
-              </div>
-            </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {advisors.map((a, i) => (
+              <article
+                key={i}
+                className="group relative flex gap-5 overflow-hidden rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg"
+              >
+                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${a.accent}`} aria-hidden="true" />
 
-            {/* Advisor 2 */}
-            <div className="flex items-center gap-6 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-brand-secondary/10 text-2xl font-bold text-brand-primary">
-                C
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">{tm.advisor2Title || "Community Health Board"}</h3>
-                <p className="text-sm font-semibold text-brand-secondary">{tm.advisor2Role || "Local Partners"}</p>
-                <p className="mt-2 text-sm text-gray-600">{tm.advisor2Desc || "Ensured our health content is culturally appropriate and aligned with local healthcare guidelines."}</p>
-              </div>
-            </div>
+                <span className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${a.accent} text-2xl font-black tracking-tight text-white shadow-lg shadow-emerald-500/20 transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3`}>
+                  {a.initial}
+                </span>
+
+                <div className="min-w-0">
+                  <h3 className="text-lg font-black tracking-tight text-slate-900">
+                    {a.title}
+                  </h3>
+                  <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-700">
+                    {a.role}
+                  </p>
+                  <span className={`mt-3 block h-0.5 w-8 rounded-full bg-gradient-to-r ${a.accent} transition-all duration-300 group-hover:w-14`} aria-hidden="true" />
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                    {a.desc}
+                  </p>
+                </div>
+              </article>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ============ JOIN US CTA ============ */}
-        <div className="mx-auto max-w-4xl">
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-brand-primary px-6 py-16 text-center shadow-2xl sm:px-16">
-            <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-brand-secondary/30 blur-3xl" />
-            <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-            
-            <div className="relative z-10">
-              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+      {/* ═══════════════ JOIN US CTA ═══════════════ */}
+      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-emerald-700 via-green-800 to-teal-800 px-6 py-16 shadow-2xl sm:px-16 sm:py-20">
+            <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+              <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-lime-300/20 blur-3xl" />
+              <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl" />
+              <div
+                className="absolute inset-0 opacity-[0.08]"
+                style={{
+                  backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px)",
+                  backgroundSize: "28px 28px",
+                }}
+              />
+            </div>
+
+            <div className="relative z-10 mx-auto max-w-3xl text-center">
+              <div className="flex justify-center">
+                <SectionLabel number="10" label="Get involved" inverted />
+              </div>
+
+              <h2 className="mt-6 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
                 {tm.ctaTitle || "Want to contribute?"}
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-lg text-white/90">
+
+              <div className="mx-auto mt-6 flex items-center justify-center gap-1.5">
+                <span className="h-1 w-12 rounded-full bg-lime-300" />
+                <span className="h-1 w-6 rounded-full bg-emerald-200" />
+                <span className="h-1 w-3 rounded-full bg-teal-200" />
+              </div>
+
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-emerald-50/90 sm:text-lg">
                 {tm.ctaDesc || "We are always looking for health professionals, translators, and community workers to help us improve AfyaLink."}
               </p>
-              <Link to="/contact" className="mt-8 inline-flex rounded-full bg-white px-8 py-3.5 text-sm font-bold text-brand-primary transition hover:bg-gray-100">
-                {tm.ctaBtn || "Contact Us"}
-              </Link>
+
+              <div className="mt-10">
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-emerald-800 shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-emerald-50 hover:shadow-xl"
+                >
+                  {tm.ctaBtn || "Contact Us"}
+                  <span className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5">
+                    {ICONS.arrow}
+                  </span>
+                </Link>
+              </div>
+
+              <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-100/80">
+                <span className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-lime-300" />
+                  Health Professionals
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                  Translators
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-teal-300" />
+                  Volunteers
+                </span>
+              </div>
             </div>
           </div>
         </div>
+      </section>
+    </div>
+  );
+}
 
+/* ============ Small detail block ============ */
+function DetailBlock({ Icon, label, value }) {
+  return (
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+        <span className="h-4 w-4">{Icon}</span>
+      </span>
+      <div>
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+          {label}
+        </p>
+        <p className="mt-1 text-sm leading-relaxed text-slate-700">
+          {value}
+        </p>
       </div>
     </div>
   );
