@@ -15,6 +15,7 @@ import Impact from "./pages/Impact";
 import About from "./pages/About";
 import WhoWeAre from "./pages/WhoWeAre"; 
 import OurTeam from "./pages/OurTeam";   
+import TeamMemberPage from "./pages/TeamMemberPage";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -25,14 +26,33 @@ function App() {
       <Navbar />
       <main className="flex-1 w-full overflow-x-hidden">
         <Routes>
+          {/* Main Pages */}
           <Route path="/" element={<Home />} />
-          {/* ... existing routes ... */}
+          <Route path="/maternal" element={<MaternalCare />} />
+          <Route path="/baby" element={<BabyCare />} />
+          <Route path="/mental-health" element={<MentalHealth />} />
+          <Route path="/health-info" element={<HealthInfo />} />
+          
+          {/* Services & Community */}
+          <Route path="/facilities" element={<Facilities />} />
+          <Route path="/appointments" element={<Appointments />} />
+          <Route path="/programs" element={<Programs />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/impact" element={<Impact />} />
+          
+          {/* About Routes */}
           <Route path="/about" element={<About />} />
-          <Route path="/about/who-we-are" element={<WhoWeAre />} /> {/* 👈 NEW */}
-          <Route path="/about/our-team" element={<OurTeam />} />     {/* 👈 NEW */}
+          <Route path="/about/who-we-are" element={<WhoWeAre />} /> 
+          <Route path="/about/our-team" element={<OurTeam />} />     
+          
+          {/* Dynamic Route for Individual Team Profiles */}
+          <Route path="/team/:slug" element={<TeamMemberPage />} />
+
+          {/* Auth & Contact */}
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
         </Routes>
       </main>
       <Footer />

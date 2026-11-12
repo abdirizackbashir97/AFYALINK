@@ -23,12 +23,12 @@ const ICONS = {
   linkedin: (<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.44v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" /></svg>),
 };
 
-function SectionLabel({ number, label }) {
+function SectionLabel({ number, label, inverted = false }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="flex h-7 items-center justify-center rounded-full bg-slate-900 px-2.5 text-[10px] font-black tracking-[0.15em] text-white">{number}</span>
-      <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">{label}</span>
-      <span className="h-px w-8 bg-slate-300" aria-hidden="true" />
+      <span className={`flex h-7 items-center justify-center rounded-full px-2.5 text-[10px] font-black tracking-[0.15em] ${inverted ? "bg-white/20 text-white" : "bg-slate-900 text-white"}`}>{number}</span>
+      <span className={`text-[10px] font-bold uppercase tracking-[0.22em] ${inverted ? "text-emerald-100/90" : "text-slate-500"}`}>{label}</span>
+      <span className={`h-px w-8 ${inverted ? "bg-white/30" : "bg-slate-300"}`} aria-hidden="true" />
     </div>
   );
 }
@@ -89,12 +89,48 @@ export default function WhoWeAre() {
   ];
 
   const voices = [
-    { quote: w.voice1Quote || "...", name: w.voice1Name || "Halima A.", role: w.voice1Role || "...", location: w.voice1Location || "...", accent: "from-emerald-500 via-teal-500 to-cyan-500" },
-    { quote: w.voice2Quote || "...", name: w.voice2Name || "Mohamed I.", role: w.voice2Role || "...", location: w.voice2Location || "...", accent: "from-teal-500 via-cyan-500 to-sky-500" },
-    { quote: w.voice3Quote || "...", name: w.voice3Name || "Abdi K.", role: w.voice3Role || "...", location: w.voice3Location || "...", accent: "from-lime-500 via-emerald-500 to-teal-500" },
-    { quote: w.voice4Quote || "...", name: w.voice4Name || "Fatuma H.", role: w.voice4Role || "...", location: w.voice4Location || "...", accent: "from-cyan-500 via-sky-500 to-teal-500" },
-    { quote: w.voice5Quote || "...", name: w.voice5Name || "Amina S.", role: w.voice5Role || "...", location: w.voice5Location || "...", accent: "from-emerald-500 via-lime-500 to-teal-500" },
-    { quote: w.voice6Quote || "...", name: w.voice6Name || "Dr. Ibrahim M.", role: w.voice6Role || "...", location: w.voice6Location || "...", accent: "from-teal-500 via-emerald-500 to-lime-500" },
+    { 
+      quote: w.voice1Quote || "Before AfyaLink...", 
+      name: w.voice1Name || "Halima A.", 
+      role: w.voice1Role || "Mother of two", 
+      location: w.voice1Location || "Garissa County", 
+      accent: "from-emerald-500 to-teal-500" 
+    },
+    { 
+      quote: w.voice2Quote || "As a community health worker...", 
+      name: w.voice2Name || "Mohamed I.", 
+      role: w.voice2Role || "Community Health Worker", 
+      location: w.voice2Location || "Mandera County", 
+      accent: "from-teal-500 to-cyan-500" 
+    },
+    { 
+      quote: w.voice3Quote || "My wife was nervous...", 
+      name: w.voice3Name || "Abdi K.", 
+      role: w.voice3Role || "Father & caregiver", 
+      location: w.voice3Location || "Wajir County", 
+      accent: "from-lime-500 to-emerald-500" 
+    },
+    { 
+      quote: w.voice4Quote || "The nearest clinic finder...", 
+      name: w.voice4Name || "Fatuma H.", 
+      role: w.voice4Role || "Mother of three", 
+      location: w.voice4Location || "Garissa County", 
+      accent: "from-cyan-500 to-teal-500" 
+    },
+    { 
+      quote: w.voice5Quote || "I volunteer with AfyaLink...", 
+      name: w.voice5Name || "Amina S.", 
+      role: w.voice5Role || "Community volunteer", 
+      location: w.voice5Location || "Dadaab", 
+      accent: "from-emerald-500 to-lime-500" 
+    },
+    { 
+      quote: w.voice6Quote || "I've seen mothers...", 
+      name: w.voice6Name || "Dr. Ibrahim M.", 
+      role: w.voice6Role || "Clinical partner", 
+      location: w.voice6Location || "Mandera County", 
+      accent: "from-teal-500 to-emerald-500" 
+    },
   ];
 
   const team = [
@@ -103,173 +139,146 @@ export default function WhoWeAre() {
     { name: w.team2Name || "Yasmin Hassan",           role: w.team2Role || "...",     bio: w.team2Bio || "...",     initials: "YH", accent: "from-lime-500 via-emerald-500 to-teal-500", linkedin: "#" },
   ];
 
-  const reviewPoints = [
-    { title: w.review1Title || "...", desc: w.review1Desc || "...", Icon: ICONS.stethoscope, accent: "from-emerald-500 via-teal-500 to-cyan-500", soft: "bg-emerald-50 text-emerald-600 ring-emerald-100" },
-    { title: w.review2Title || "...", desc: w.review2Desc || "...", Icon: ICONS.book,        accent: "from-teal-500 via-cyan-500 to-sky-500",     soft: "bg-teal-50 text-teal-600 ring-teal-100" },
-    { title: w.review3Title || "...", desc: w.review3Desc || "...", Icon: ICONS.alert,       accent: "from-amber-500 via-orange-500 to-red-500",  soft: "bg-amber-50 text-amber-700 ring-amber-100" },
-  ];
-
-  const languages = [
-    { code: "EN", name: w.lang1Name || "English",   greeting: w.lang1Greeting || "Hello",   nativeName: "English",   accent: "from-emerald-500 via-teal-500 to-cyan-500", glow: "bg-emerald-400/40" },
-    { code: "SW", name: w.lang2Name || "Kiswahili", greeting: w.lang2Greeting || "Habari",  nativeName: "Kiswahili", accent: "from-teal-500 via-cyan-500 to-sky-500",      glow: "bg-teal-400/40" },
-    { code: "SO", name: w.lang3Name || "Somali",    greeting: w.lang3Greeting || "Salaam",  nativeName: "Soomaali",  accent: "from-lime-500 via-emerald-500 to-teal-500",  glow: "bg-lime-400/40" },
-  ];
-
   return (
     <div className="overflow-x-hidden bg-white">
 
-      {/* ═══════════ 1. HERO ═══════════ */}
-      <section className="relative overflow-hidden bg-white py-20 sm:py-28 lg:py-32">
+      {/* ═══════════ 1. PREMIUM HERO SECTION ═══════════ */}
+      <section className="relative overflow-hidden bg-slate-900 pt-32 pb-48 sm:pt-40 sm:pb-56">
+        {/* Immersive Background Effects */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/80 via-white to-white" />
-          <div className="absolute -top-40 -left-32 h-[28rem] w-[28rem] rounded-full bg-emerald-200/40 blur-3xl" />
-          <div className="absolute top-1/3 -right-32 h-[28rem] w-[28rem] rounded-full bg-teal-200/40 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-950 via-teal-900/50 to-slate-900" />
+          <div className="absolute -top-40 -left-32 h-[32rem] w-[32rem] rounded-full bg-emerald-500/20 blur-[120px]" />
+          <div className="absolute top-1/3 -right-32 h-[32rem] w-[32rem] rounded-full bg-teal-500/20 blur-[120px]" />
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-20">
-            <div className="order-2 lg:order-1">
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-700 shadow-sm backdrop-blur">
+            
+            {/* Left Text Column */}
+            <div className="order-2 lg:order-1 text-center lg:text-left">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-100 backdrop-blur-md shadow-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
                 </span>
                 {t.about?.aboutMain || "About AfyaLink"}
               </span>
 
-              <h1 className="mt-6 text-5xl font-black leading-[1.02] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
-                {w.title || "Who We Are"}
+              <h1 className="mt-6 text-5xl font-black leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+                {/* 👇 FIXED: Pulling from t.about instead of w */}
+                {t.about?.heroTitle || "Supporting Every Mother. Protecting Every Beginning."}
               </h1>
 
-              <div className="mt-6 flex items-center gap-1.5">
-                <span className="h-1 w-12 rounded-full bg-emerald-500" />
-                <span className="h-1 w-6 rounded-full bg-teal-400" />
-                <span className="h-1 w-3 rounded-full bg-lime-400" />
+              <div className="mt-8 flex items-center justify-center lg:justify-start gap-1.5">
+                <span className="h-1.5 w-12 rounded-full bg-emerald-500" />
+                <span className="h-1.5 w-6 rounded-full bg-teal-400" />
+                <span className="h-1.5 w-3 rounded-full bg-lime-400" />
               </div>
 
-              <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-emerald-700 sm:text-xl">
-                {w.subtitle || "A community-first approach to maternal and newborn health."}
-              </p>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
-                {w.description || "AfyaLink is a community-focused health information platform..."}
+              <p className="mt-8 max-w-xl text-lg leading-relaxed text-emerald-100/80 sm:text-xl mx-auto lg:mx-0">
+                {/* 👇 FIXED: Pulling from t.about instead of w */}
+                {t.about?.heroDesc || "AfyaLink is dedicated to making maternal and newborn health information more accessible to families in Northeastern Kenya and beyond."}
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-slate-200/70 pt-8">
-                {stats.slice(0, 3).map((s, i) => (
-                  <div key={i} className="flex flex-col">
-                    <span className="text-2xl font-black tracking-tight text-slate-900">{s.value}</span>
-                    <span className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500">{s.label}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-10 flex flex-wrap items-center gap-3">
-                <Link to="/about/our-team" className="group inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-emerald-700">
-                  {w.joinBtn2 || "Explore Our Team"}
-                  <span className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5">{ICONS.arrow}</span>
+              <div className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                <Link to="/maternal" className="group inline-flex items-center gap-2 rounded-full bg-emerald-500 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:-translate-y-1 hover:bg-emerald-400">
+                  {/* 👇 FIXED: Pulling from t.about instead of w */}
+                  {t.about?.heroBtn1 || "Explore Maternal Care"}
+                  <span className="h-4 w-4 transition-transform group-hover:translate-x-1">{ICONS.arrow}</span>
                 </Link>
-                <Link to="/contact" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-300 hover:text-emerald-700">
-                  {w.joinBtn1 || "Contact Us"}
+                <Link to="/about/our-team" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10">
+                  {/* 👇 FIXED: Pulling from t.about instead of w */}
+                  {t.about?.heroBtn2 || "Discover Our Mission"}
                 </Link>
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2">
-              <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-br from-emerald-200/50 via-teal-100/50 to-lime-100/30 blur-2xl" aria-hidden="true" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/60 shadow-2xl shadow-emerald-900/10">
-                <img src={whoWeAreImg} alt="AfyaLink community" className="h-[420px] w-full object-cover sm:h-[520px]" />
+            {/* Right Image Column */}
+            <div className="relative order-1 lg:order-2 mx-auto w-full max-w-lg lg:max-w-none">
+              <div className="absolute -inset-4 rounded-[3rem] bg-gradient-to-tr from-emerald-500/30 to-teal-500/30 blur-2xl" aria-hidden="true" />
+              
+              <div className="relative overflow-hidden rounded-[2.5rem] border border-white/20 shadow-2xl">
+                <img src={whoWeAreImg} alt="AfyaLink community" className="h-[400px] w-full object-cover sm:h-[500px]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-60" />
               </div>
 
-              <div className="absolute -bottom-6 -left-4 rounded-2xl border border-white/80 bg-white/95 p-5 shadow-xl backdrop-blur-md sm:-left-6">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-                    <span className="h-5 w-5">{ICONS.heartHands}</span>
+              {/* Floating Stat Card 1 */}
+              <div className="absolute -bottom-6 -left-4 sm:-left-8 rounded-2xl border border-white/40 bg-white/90 p-5 shadow-2xl backdrop-blur-xl">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                    <span className="h-6 w-6">{ICONS.heartHands}</span>
                   </span>
                   <div>
-                    <p className="text-xl font-black tracking-tight text-slate-900">{stats[0].value}</p>
+                    <p className="text-2xl font-black tracking-tight text-slate-900">{stats[0].value}</p>
                     <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">{w.heroFamiliesLabel || "Families served"}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="absolute -top-4 right-4 rounded-2xl border border-white/80 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md">
-                <div className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white">
-                    <span className="h-3.5 w-3.5">{ICONS.check}</span>
+              {/* Floating Stat Card 2 */}
+              <div className="absolute -top-4 right-4 sm:right-8 rounded-2xl border border-white/40 bg-white/90 px-5 py-4 shadow-2xl backdrop-blur-xl">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white shadow-inner">
+                    <span className="h-4 w-4">{ICONS.check}</span>
                   </span>
-                  <p className="text-xs font-bold text-slate-800">{w.heroTrustedLabel || "Trusted by CHWs"}</p>
+                  <p className="text-sm font-black text-slate-800">{w.heroTrustedLabel || "Trusted by CHWs"}</p>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      <SectionDivider />
+      {/* ═══════════ 2. NEW BENTO BOX IMPACT SECTION ═══════════ */}
+      <section className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-24 pb-24">
+        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {/* Main Big Card */}
+          <div className="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-emerald-600 to-teal-800 rounded-3xl p-8 sm:p-10 shadow-2xl text-white flex flex-col justify-between overflow-hidden relative group">
+             <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
+             <div>
+               <span className="text-[10px] font-black uppercase tracking-widest text-emerald-200 bg-emerald-900/50 px-3 py-1 rounded-full">{w.labelImpact || "Measured Impact"}</span>
+               <h3 className="mt-6 text-3xl sm:text-4xl font-black leading-tight">{w.statsTitle || "Our Impact So Far"}</h3>
+               <p className="mt-4 text-emerald-100/90 text-sm sm:text-base max-w-md">{w.statsSubtitle || "Real numbers, real families, and a growing network of care across Northeastern Kenya."}</p>
+             </div>
+             <div className="mt-8 flex gap-8">
+               <div>
+                 <p className="text-4xl font-black">{stats[0].value}</p>
+                 <p className="text-xs font-bold text-emerald-200 uppercase tracking-widest mt-1">{stats[0].label}</p>
+               </div>
+               <div>
+                 <p className="text-4xl font-black">{stats[1].value}</p>
+                 <p className="text-xs font-bold text-emerald-200 uppercase tracking-widest mt-1">{stats[1].label}</p>
+               </div>
+             </div>
+          </div>
 
-      {/* ═══════════ 2. OUR STORY ═══════════ */}
-      <section className="relative overflow-hidden bg-slate-50/70 py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute -top-32 right-0 h-96 w-96 rounded-full bg-emerald-100/60 blur-3xl" />
-          <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-teal-100/60 blur-3xl" />
-        </div>
+          {/* Stat Card 2 */}
+          <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 flex flex-col justify-center items-center text-center hover:-translate-y-1 transition-transform duration-300">
+            <span className="h-12 w-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+              <span className="h-6 w-6">{ICONS.book}</span>
+            </span>
+            <p className="text-4xl font-black text-slate-900">{stats[2].value}</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">{stats[2].label}</p>
+          </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-            <div className="lg:sticky lg:top-28 lg:self-start">
-              <SectionLabel number="01" label={w.labelOurStory || "Our Story"} />
-              <h2 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">
-                {w.storyTitle || "Born from a real gap in care."}
-              </h2>
-              <div className="mt-6 flex items-center gap-2">
-                <span className="h-1 w-10 rounded-full bg-emerald-500" />
-                <span className="h-1 w-5 rounded-full bg-teal-400" />
-                <span className="h-1 w-2 rounded-full bg-lime-400" />
-              </div>
-            </div>
-
-            <div>
-              <p className="text-lg leading-relaxed text-slate-700 sm:text-xl">
-                <span className="float-left mr-3 mt-1 text-6xl font-black leading-none text-emerald-600">A</span>
-                {w.storyDesc || "fyaLink began with a simple observation..."}
-              </p>
-              <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
-                {w.storyDesc2 || "We started with research..."}
-              </p>
-
-              <div className="mt-10 rounded-2xl border-l-4 border-emerald-500 bg-white p-6 shadow-sm sm:p-8">
-                <p className="text-lg font-medium italic leading-relaxed text-slate-700">
-                  "{w.storyQuote || "If a mother can find trusted health guidance in her own language, she doesn't need to be told what to do — she already knows."}"
-                </p>
-                <p className="mt-4 text-sm font-bold uppercase tracking-[0.15em] text-emerald-700">
-                  {w.storyQuoteAttribution || "— AfyaLink founding principle"}
-                </p>
-              </div>
-
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                {[
-                  { label: w.storyPillar1Label || "Rooted",    desc: w.storyPillar1Desc || "Local research first" },
-                  { label: w.storyPillar2Label || "Practical", desc: w.storyPillar2Desc || "Actionable guidance" },
-                  { label: w.storyPillar3Label || "Ongoing",   desc: w.storyPillar3Desc || "Improved weekly" },
-                ].map((item, i) => (
-                  <div key={i} className="rounded-xl border border-slate-200 bg-white p-4">
-                    <p className="text-sm font-black uppercase tracking-[0.15em] text-emerald-700">{item.label}</p>
-                    <p className="mt-1 text-xs text-slate-500">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Stat Card 3 */}
+          <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 flex flex-col justify-center items-center text-center hover:-translate-y-1 transition-transform duration-300">
+            <span className="h-12 w-12 rounded-full bg-lime-50 text-lime-600 flex items-center justify-center mb-4">
+              <span className="h-6 w-6">{ICONS.globe}</span>
+            </span>
+            <p className="text-4xl font-black text-slate-900">{stats[3].value}</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">{stats[3].label}</p>
           </div>
         </div>
       </section>
-
-      <SectionDivider />
 
       {/* ═══════════ 3. MISSION & VISION ═══════════ */}
-      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
+      <section className="relative overflow-hidden bg-slate-50 py-24 sm:py-32">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="02" label={w.labelPurpose || "Purpose · Direction"} /></div>
+            <div className="flex justify-center"><SectionLabel number="01" label={w.labelPurpose || "Purpose · Direction"} /></div>
             <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
               {w.missionVisionHeading || "What drives us forward"}
             </h2>
@@ -277,24 +286,21 @@ export default function WhoWeAre() {
 
           <div className="grid gap-8 md:grid-cols-2">
             {[
-              { num: "01", title: w.missionTitle || "Our Mission", desc: w.missionDesc || "...", Icon: ICONS.target, accent: "from-emerald-500 via-teal-500 to-cyan-500", glow: "bg-emerald-400/40", tag: w.missionTag || "Every day" },
-              { num: "02", title: w.visionTitle  || "Our Vision",  desc: w.visionDesc  || "...", Icon: ICONS.eye,    accent: "from-teal-500 via-cyan-500 to-sky-500",      glow: "bg-teal-400/40",    tag: w.visionTag || "Every family" },
+              { num: "01", title: w.missionTitle || "Our Mission", desc: w.missionDesc || "...", Icon: ICONS.target, accent: "from-emerald-500 via-teal-500 to-cyan-500", tag: w.missionTag || "Every day" },
+              { num: "02", title: w.visionTitle  || "Our Vision",  desc: w.visionDesc  || "...", Icon: ICONS.eye,    accent: "from-teal-500 via-cyan-500 to-sky-500",      tag: w.visionTag || "Every family" },
             ].map((card) => (
-              <article key={card.num} className="group relative overflow-hidden rounded-3xl border border-slate-200/70 bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-[0_20px_60px_-15px_rgba(16,185,129,0.35)] sm:p-10">
-                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${card.accent}`} aria-hidden="true" />
-                <span className={`pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full ${card.glow} opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100`} aria-hidden="true" />
-                <span aria-hidden="true" className="pointer-events-none absolute right-4 top-2 select-none text-[110px] font-black leading-none text-slate-100 transition-colors duration-500 group-hover:text-emerald-100/80">{card.num}</span>
-
+              <article key={card.num} className="group relative overflow-hidden rounded-3xl bg-white p-8 shadow-sm border border-slate-200 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl sm:p-10">
+                <span className={`absolute inset-x-0 top-0 h-[4px] bg-gradient-to-r ${card.accent}`} aria-hidden="true" />
+                <span aria-hidden="true" className="absolute right-4 top-2 select-none text-[110px] font-black leading-none text-slate-50 transition-colors duration-500 group-hover:text-emerald-50">{card.num}</span>
                 <div className="relative">
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-slate-200 bg-white/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">
-                    <span className="h-1 w-1 rounded-full bg-emerald-500" />{card.tag}
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />{card.tag}
                   </span>
-                  <div className={`mt-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${card.accent} text-white shadow-lg shadow-emerald-500/20 transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3`}>
+                  <div className={`mt-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${card.accent} text-white shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3`}>
                     <span className="h-7 w-7">{card.Icon}</span>
                   </div>
-                  <h3 className="mt-5 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">{card.title}</h3>
-                  <span className={`mt-4 block h-0.5 w-10 rounded-full bg-gradient-to-r ${card.accent} transition-all duration-300 group-hover:w-16`} aria-hidden="true" />
-                  <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{card.desc}</p>
+                  <h3 className="mt-6 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">{card.title}</h3>
+                  <p className="mt-4 text-base leading-relaxed text-slate-600">{card.desc}</p>
                 </div>
               </article>
             ))}
@@ -302,116 +308,52 @@ export default function WhoWeAre() {
         </div>
       </section>
 
-      <SectionDivider />
-
       {/* ═══════════ 4. CORE VALUES ═══════════ */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/40 to-white py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-emerald-200/40 blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-teal-200/40 blur-3xl" />
-        </div>
-
+      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="03" label={w.labelPrinciples || "The principles"} /></div>
+            <div className="flex justify-center"><SectionLabel number="02" label={w.labelPrinciples || "The principles"} /></div>
             <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{w.valuesTitle || "Our Core Values"}</h2>
-            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
-              <span className="h-1 w-12 rounded-full bg-emerald-500" />
-              <span className="h-1 w-6 rounded-full bg-teal-400" />
-              <span className="h-1 w-3 rounded-full bg-lime-400" />
-            </div>
             <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">{w.valuesSubtitle || "The principles that guide everything we build."}</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((v, i) => (
-              <article key={v.key} className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white/90 p-6 shadow-sm backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-[0_20px_60px_-15px_rgba(16,185,129,0.35)] sm:p-7">
-                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${v.accent}`} aria-hidden="true" />
-                <span aria-hidden="true" className="pointer-events-none absolute right-3 top-2 select-none text-[72px] font-black leading-none text-slate-100 transition-colors duration-500 group-hover:text-emerald-100/80">0{i + 1}</span>
-                <div className="relative flex flex-1 flex-col">
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-slate-200 bg-white/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">
-                    <span className="h-1 w-1 rounded-full bg-emerald-500" />{v.tag}
-                  </span>
-                  <div className={`mt-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${v.accent} text-white shadow-lg shadow-emerald-500/20 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                    <span className="h-6 w-6">{v.Icon}</span>
-                  </div>
-                  <h3 className="mt-5 text-lg font-black tracking-tight text-slate-900">{v.title}</h3>
-                  <span className={`mt-3 block h-0.5 w-8 rounded-full bg-gradient-to-r ${v.accent} transition-all duration-300 group-hover:w-14`} aria-hidden="true" />
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-[15px]">{v.desc}</p>
+              <article key={v.key} className="group relative flex flex-col overflow-hidden rounded-3xl bg-slate-50 p-7 border border-slate-100 transition-all duration-500 hover:-translate-y-1.5 hover:bg-white hover:shadow-xl hover:border-emerald-100">
+                <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${v.accent} text-white shadow-md transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+                  <span className="h-6 w-6">{v.Icon}</span>
                 </div>
+                <h3 className="mt-6 text-lg font-black tracking-tight text-slate-900">{v.title}</h3>
+                <span className={`mt-3 block h-0.5 w-8 rounded-full bg-gradient-to-r ${v.accent} transition-all duration-300 group-hover:w-14`} />
+                <p className="mt-4 text-sm leading-relaxed text-slate-600">{v.desc}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════════ 5. IMPACT STATS ═══════════ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-700 via-green-800 to-teal-800 py-24 sm:py-32 text-white">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute -top-40 left-1/4 h-96 w-96 rounded-full bg-lime-300/20 blur-3xl" />
-          <div className="absolute -bottom-40 right-1/4 h-96 w-96 rounded-full bg-emerald-300/20 blur-3xl" />
-        </div>
+      <SectionDivider />
 
+      {/* ═══════════ 5. JOURNEY ═══════════ */}
+      <section className="relative overflow-hidden bg-slate-50/70 py-24 sm:py-32">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center">
-              <div className="flex items-center gap-3">
-                <span className="flex h-7 items-center justify-center rounded-full bg-white/20 px-2.5 text-[10px] font-black tracking-[0.15em] text-white">04</span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-100/90">{w.labelImpact || "Measured impact"}</span>
-                <span className="h-px w-8 bg-white/30" aria-hidden="true" />
-              </div>
-            </div>
-            <h2 className="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">{w.statsTitle || "Our Impact So Far"}</h2>
-            <p className="mt-5 text-base leading-relaxed text-emerald-50/85 sm:text-lg">{w.statsSubtitle || "Real numbers, real families..."}</p>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((s, i) => (
-              <div key={i} className="group rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-white/40 hover:bg-white/15">
-                <p className="text-5xl font-black tracking-tight text-white sm:text-6xl">{s.value}</p>
-                <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-100/90">{s.label}</p>
-                <div className="mt-5 h-1 w-full overflow-hidden rounded-full bg-white/20">
-                  <div className="h-full rounded-full bg-gradient-to-r from-lime-300 to-emerald-300 transition-all duration-700" style={{ width: `${s.progress}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════ 6. JOURNEY ═══════════ */}
-      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute top-1/3 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-emerald-100/40 blur-3xl" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="05" label={w.labelPath || "The path"} /></div>
+            <div className="flex justify-center"><SectionLabel number="03" label={w.labelPath || "The path"} /></div>
             <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{w.journeyTitle || "The AfyaLink Journey"}</h2>
-            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
-              <span className="h-1 w-12 rounded-full bg-emerald-500" />
-              <span className="h-1 w-6 rounded-full bg-teal-400" />
-              <span className="h-1 w-3 rounded-full bg-lime-400" />
-            </div>
             <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">{w.journeySubtitle || "How we are building a healthier future, step by step."}</p>
           </div>
 
           <div className="relative">
-            <div className="pointer-events-none absolute left-[16%] right-[16%] top-[60px] hidden h-0.5 bg-gradient-to-r from-emerald-400/0 via-emerald-400/60 to-emerald-400/0 md:block" aria-hidden="true" />
-            <div className="grid gap-8 md:grid-cols-3">
-              {phases.map((p) => (
+            <div className="pointer-events-none absolute left-[16%] right-[16%] top-[40px] hidden h-1 bg-gradient-to-r from-emerald-500/20 via-emerald-500 to-emerald-500/20 md:block rounded-full" aria-hidden="true" />
+            <div className="grid gap-10 md:grid-cols-3">
+              {phases.map((p, i) => (
                 <div key={p.num} className="group relative flex flex-col items-center text-center">
-                  <div className="relative flex h-[120px] w-[120px] items-center justify-center">
-                    <span className="relative flex h-[88px] w-[88px] items-center justify-center rounded-full border border-emerald-200 bg-white shadow-lg transition-all duration-500 group-hover:-translate-y-1 group-hover:border-emerald-400">
-                      <span className="text-2xl font-black tracking-tight text-emerald-600">{p.num}</span>
-                    </span>
+                  <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-xl ring-4 ring-slate-50 transition-all duration-500 group-hover:ring-emerald-100 group-hover:-translate-y-2">
+                    <span className="text-2xl font-black text-emerald-600">{p.num}</span>
                   </div>
-                  <span className="mt-4 rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">{p.tag}</span>
-                  <div className="mt-5 w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 group-hover:-translate-y-1 group-hover:border-emerald-200 group-hover:shadow-xl">
-                    <h3 className="text-lg font-black tracking-tight text-slate-900">{p.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600">{p.desc}</p>
-                  </div>
+                  <span className="mt-6 rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-800">{p.tag}</span>
+                  <h3 className="mt-4 text-xl font-black tracking-tight text-slate-900">{p.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600 max-w-xs">{p.desc}</p>
                 </div>
               ))}
             </div>
@@ -421,38 +363,24 @@ export default function WhoWeAre() {
 
       <SectionDivider />
 
-      {/* ═══════════ 7. OUR APPROACH ═══════════ */}
-      <section className="relative overflow-hidden bg-slate-50/70 py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute -top-32 right-1/4 h-96 w-96 rounded-full bg-teal-100/60 blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-emerald-100/60 blur-3xl" />
-        </div>
-
+      {/* ═══════════ 6. OUR APPROACH ═══════════ */}
+      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+          <div className="grid gap-14 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-20">
             <div className="lg:sticky lg:top-28 lg:self-start">
-              <SectionLabel number="06" label={w.labelHowWeWork || "How we work"} />
+              <SectionLabel number="04" label={w.labelHowWeWork || "How we work"} />
               <h2 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">{w.approachTitle || "Our Approach"}</h2>
-              <div className="mt-6 flex items-center gap-2">
-                <span className="h-1 w-10 rounded-full bg-emerald-500" />
-                <span className="h-1 w-5 rounded-full bg-teal-400" />
-                <span className="h-1 w-2 rounded-full bg-lime-400" />
-              </div>
               <p className="mt-6 max-w-md text-base leading-relaxed text-slate-600 sm:text-lg">{w.approachDesc || "We combine modern technology..."}</p>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-2">
               {approachSteps.map((step, i) => (
-                <div key={i} className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-                  <span aria-hidden="true" className="pointer-events-none absolute -top-6 -right-4 select-none text-[80px] font-black leading-none text-slate-100 transition-colors duration-500 group-hover:text-emerald-100/80">0{i + 1}</span>
-                  <div className="relative">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-all duration-300 group-hover:scale-110">
-                      <span className="h-5 w-5">{step.Icon}</span>
-                    </div>
-                    <h3 className="mt-5 text-base font-black tracking-tight text-slate-900">{step.title}</h3>
-                    <span className="mt-3 block h-0.5 w-6 rounded-full bg-emerald-500 transition-all duration-300 group-hover:w-12" aria-hidden="true" />
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600">{step.desc}</p>
+                <div key={i} className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-slate-50 p-8 transition-all duration-500 hover:bg-white hover:-translate-y-1 hover:shadow-xl hover:border-emerald-100">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm ring-1 ring-slate-100 transition-all duration-300 group-hover:scale-110 group-hover:bg-emerald-50">
+                    <span className="h-6 w-6">{step.Icon}</span>
                   </div>
+                  <h3 className="mt-6 text-lg font-black tracking-tight text-slate-900">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">{step.desc}</p>
                 </div>
               ))}
             </div>
@@ -460,82 +388,62 @@ export default function WhoWeAre() {
         </div>
       </section>
 
-      <SectionDivider />
-
-      {/* ═══════════ 8. COMMUNITY VOICE ═══════════ */}
-      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
+      {/* ═══════════ 7. VOICES GRID (NO IMAGES, GREEN GLASS) ═══════════ */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-teal-900 to-emerald-900 py-24 sm:py-32">
+        {/* Green Background Glows */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-emerald-100/50 blur-3xl" />
+          <div className="absolute -top-40 left-1/4 h-96 w-96 rounded-full bg-emerald-500/20 blur-[120px]" />
+          <div className="absolute -bottom-40 right-1/4 h-96 w-96 rounded-full bg-teal-500/20 blur-[120px]" />
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{ backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)", backgroundSize: "32px 32px" }}
+          />
         </div>
 
-        <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-[2.5rem] border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-10 shadow-lg sm:p-16">
-            <span aria-hidden="true" className="absolute -top-2 left-6 text-[180px] leading-none text-emerald-100">
-              <span className="h-24 w-24 block">{ICONS.quote}</span>
-            </span>
-            <div className="relative text-center">
-              <div className="flex justify-center"><SectionLabel number="07" label={w.labelFromCommunity || "From the community"} /></div>
-              <blockquote className="mt-8 text-2xl font-medium italic leading-relaxed text-slate-800 sm:text-3xl">
-                "{w.testimonialQuote || "AfyaLink changed how I care for my family..."}"
-              </blockquote>
-              <div className="mt-10 flex items-center justify-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-base font-black text-white shadow-md">
-                  {(w.testimonialAuthor || "Halima A.").charAt(0)}
-                </span>
-                <div className="text-left">
-                  <p className="text-sm font-black tracking-tight text-slate-900">{w.testimonialAuthor || "Halima A."}</p>
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">{w.testimonialRole || "Mother of two, Garissa County"}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* ═══════════ 9. VOICES GRID ═══════════ */}
-      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute -top-32 right-1/4 h-96 w-96 rounded-full bg-emerald-100/60 blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-teal-100/60 blur-3xl" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="08" label={w.labelCommunitySays || "What the community says"} /></div>
-            <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{w.voicesTitle || "Voices from the families we serve"}</h2>
-            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
-              <span className="h-1 w-12 rounded-full bg-emerald-500" />
-              <span className="h-1 w-6 rounded-full bg-teal-400" />
-              <span className="h-1 w-3 rounded-full bg-lime-400" />
+            <div className="flex justify-center">
+              <SectionLabel number="05" label={w.labelCommunitySays || "What the community says"} inverted />
             </div>
-            <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">{w.voicesDesc || "Real words from mothers, fathers, and community health workers..."}</p>
-            <div className="mt-8 inline-flex flex-wrap items-center justify-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (<span key={i} className="h-4 w-4 text-amber-400">{ICONS.star}</span>))}
+            <h2 className="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">{w.voicesTitle || "Voices from the families we serve"}</h2>
+            <p className="mt-6 text-base leading-relaxed text-emerald-100/80 sm:text-lg">{w.voicesDesc || "Real words from mothers, fathers, and community health workers..."}</p>
+            
+            {/* Rating Badge */}
+            <div className="mt-8 inline-flex flex-wrap items-center justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-md">
+              <div className="flex items-center gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (<span key={i} className="h-4 w-4">{ICONS.star}</span>))}
               </div>
-              <span className="text-sm font-black tracking-tight text-slate-900">4.9</span>
-              <span className="text-xs font-medium text-slate-500">{w.reviewsCount || "· based on 500+ community reviews"}</span>
+              <span className="text-sm font-black tracking-tight text-white">4.9</span>
+              <span className="text-xs font-medium text-emerald-100/70">{w.reviewsCount || "· based on 500+ community reviews"}</span>
             </div>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {voices.map((v, i) => (
-              <article key={i} className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-lg">
-                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${v.accent}`} aria-hidden="true" />
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, s) => (<span key={s} className="h-3.5 w-3.5 text-amber-400">{ICONS.star}</span>))}
+              <article 
+                key={i} 
+                className="group relative flex flex-col overflow-hidden rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 p-8 shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:bg-white/10 hover:border-white/20"
+              >
+                {/* Top Accent Line */}
+                <span className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${v.accent}`} aria-hidden="true" />
+                
+                {/* 5 Stars */}
+                <div className="flex items-center gap-1 text-amber-400 mb-6">
+                  {[...Array(5)].map((_, s) => (<span key={s} className="h-4 w-4">{ICONS.star}</span>))}
                 </div>
-                <p className="mt-4 flex-1 text-[15px] leading-relaxed text-slate-700">"{v.quote}"</p>
-                <span className="mt-5 block h-px w-full bg-gradient-to-r from-slate-200 via-slate-100 to-transparent" aria-hidden="true" />
-                <div className="mt-4 flex items-center gap-3">
-                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${v.accent} text-sm font-black text-white shadow-md`}>
+
+                {/* Quote */}
+                <p className="flex-1 text-[15px] font-medium leading-relaxed text-emerald-50">"{v.quote}"</p>
+
+                {/* User Info (Initial Avatar) */}
+                <div className="mt-8 flex items-center gap-4 border-t border-white/20 pt-6">
+                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${v.accent} text-lg font-black text-white shadow-lg`}>
                     {v.name.charAt(0)}
-                  </span>
+                  </div>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-black tracking-tight text-slate-900">{v.name}</p>
-                    <p className="truncate text-xs font-semibold text-slate-500">{v.role} · {v.location}</p>
+                    <p className="truncate text-base font-black tracking-tight text-white">{v.name}</p>
+                    <p className="truncate text-xs font-bold uppercase tracking-wider text-emerald-300 mt-0.5">{v.role}</p>
+                    <p className="truncate text-xs font-medium text-emerald-200/60">{v.location}</p>
                   </div>
                 </div>
               </article>
@@ -544,226 +452,71 @@ export default function WhoWeAre() {
         </div>
       </section>
 
-      <SectionDivider />
-
-      {/* ═══════════ 10. MEET THE TEAM ═══════════ */}
-      <section className="relative overflow-hidden bg-slate-50/70 py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-emerald-100/60 blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-teal-100/60 blur-3xl" />
-        </div>
-
+      {/* ═══════════ 8. MEET THE TEAM PREVIEW ═══════════ */}
+      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="09" label={w.labelPeopleBehind || "The people behind AfyaLink"} /></div>
+            <div className="flex justify-center"><SectionLabel number="06" label={w.labelPeopleBehind || "The people behind AfyaLink"} /></div>
             <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{w.teamPreviewTitle || "Meet the people behind the platform"}</h2>
-            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
-              <span className="h-1 w-12 rounded-full bg-emerald-500" />
-              <span className="h-1 w-6 rounded-full bg-teal-400" />
-              <span className="h-1 w-3 rounded-full bg-lime-400" />
-            </div>
             <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">{w.teamPreviewDesc || "A small, dedicated team..."}</p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {team.map((member, i) => (
-              <article key={i} className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white p-7 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-lg">
-                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${member.accent}`} aria-hidden="true" />
+              <article key={i} className="group relative flex flex-col overflow-hidden rounded-[2rem] bg-slate-50 p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:-translate-y-2 hover:shadow-2xl hover:border-emerald-100">
                 <div className="flex items-start justify-between">
-                  <span className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${member.accent} text-xl font-black tracking-tight text-white shadow-lg shadow-emerald-500/20 transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3`}>
+                  <span className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br ${member.accent} text-2xl font-black tracking-tight text-white shadow-xl shadow-emerald-500/20 transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3`}>
                     {member.initials}
                   </span>
-                  <a href={member.linkedin} aria-label={`${member.name} on LinkedIn`} className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition-all hover:border-sky-200 hover:bg-sky-50 hover:text-sky-600">
+                  <a href={member.linkedin} aria-label={`${member.name} on LinkedIn`} className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-400 transition-all hover:border-sky-200 hover:text-sky-600 hover:shadow-md">
                     <span className="h-4 w-4">{ICONS.linkedin}</span>
                   </a>
                 </div>
-                <h3 className="mt-6 text-lg font-black tracking-tight text-slate-900">{member.name}</h3>
-                <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-emerald-700">{member.role}</p>
-                <span className={`mt-4 block h-0.5 w-8 rounded-full bg-gradient-to-r ${member.accent}`} aria-hidden="true" />
+                <h3 className="mt-6 text-xl font-black tracking-tight text-slate-900">{member.name}</h3>
+                <p className="mt-1 text-xs font-bold uppercase tracking-widest text-emerald-700">{member.role}</p>
                 <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-600">{member.bio}</p>
               </article>
             ))}
           </div>
 
-          <div className="mt-12 flex justify-center">
-            <Link to="/about/our-team" className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:text-emerald-700">
+          <div className="mt-14 flex justify-center">
+            <Link to="/about/our-team" className="group inline-flex items-center gap-3 rounded-full bg-slate-900 px-8 py-4 text-sm font-bold text-white shadow-xl transition-all hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-emerald-500/30">
               {w.teamPreviewCta || "Meet the full team"}
-              <span className="h-4 w-4 transition-transform group-hover:translate-x-0.5">{ICONS.arrow}</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* ═══════════ 11. MEDICAL REVIEW ═══════════ */}
-      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="10" label={w.labelMedicalReview || "Medical review · Safety"} /></div>
-            <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{w.reviewTitle || "Health content you can trust"}</h2>
-            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
-              <span className="h-1 w-12 rounded-full bg-emerald-500" />
-              <span className="h-1 w-6 rounded-full bg-teal-400" />
-              <span className="h-1 w-3 rounded-full bg-lime-400" />
-            </div>
-            <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">{w.reviewSubtitle || "Every piece of content follows a clear review process..."}</p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {reviewPoints.map((rp, i) => (
-              <article key={i} className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white p-7 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-lg">
-                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${rp.accent}`} aria-hidden="true" />
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${rp.soft} ring-1 transition-all group-hover:scale-110`}>
-                  <span className="h-6 w-6">{rp.Icon}</span>
-                </div>
-                <h3 className="mt-5 text-lg font-black tracking-tight text-slate-900">{rp.title}</h3>
-                <span className={`mt-3 block h-0.5 w-8 rounded-full bg-gradient-to-r ${rp.accent}`} aria-hidden="true" />
-                <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-[15px]">{rp.desc}</p>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-6 sm:flex-row sm:p-8">
-            <div className="flex items-start gap-4 text-center sm:text-left">
-              <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 sm:flex">
-                <span className="h-5 w-5">{ICONS.shieldCheck}</span>
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 transition-transform group-hover:translate-x-1">
+                {ICONS.arrow}
               </span>
-              <div>
-                <p className="text-base font-black tracking-tight text-slate-900">{w.reviewCtaTitle || "Read our full editorial policy"}</p>
-                <p className="mt-1 text-sm text-slate-600">{w.reviewCtaDesc || "Transparency about who reviews our content..."}</p>
-              </div>
-            </div>
-            <Link to="/about/editorial-policy" className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-emerald-700">
-              {w.reviewCtaBtn || "View policy"}
-              <span className="h-4 w-4 transition-transform group-hover:translate-x-0.5">{ICONS.arrow}</span>
             </Link>
           </div>
         </div>
       </section>
 
-      <SectionDivider />
-
-      {/* ═══════════ 12. LANGUAGES ═══════════ */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/40 to-white py-24 sm:py-32">
+      {/* ═══════════ 9. CTA ═══════════ */}
+      <section className="relative overflow-hidden bg-slate-50 py-24 sm:py-32">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="11" label={w.labelLanguages || "Languages · Accessibility"} /></div>
-            <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{w.languagesTitle || "Built in the languages families actually speak"}</h2>
-            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
-              <span className="h-1 w-12 rounded-full bg-emerald-500" />
-              <span className="h-1 w-6 rounded-full bg-teal-400" />
-              <span className="h-1 w-3 rounded-full bg-lime-400" />
-            </div>
-            <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">{w.languagesDesc || "AfyaLink is fully available in English, Kiswahili, and Somali..."}</p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {languages.map((lang) => (
-              <article key={lang.code} className="group relative overflow-hidden rounded-3xl border border-slate-200/70 bg-white/90 p-8 shadow-sm backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-lg">
-                <span className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${lang.accent}`} aria-hidden="true" />
-                <div className="relative flex flex-col items-center text-center">
-                  <span className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${lang.accent} text-lg font-black tracking-tight text-white shadow-lg transition-transform group-hover:scale-105 group-hover:rotate-3`}>{lang.code}</span>
-                  <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">{lang.name}</p>
-                  <p className="mt-3 text-4xl font-black tracking-tight text-slate-900">{lang.greeting}</p>
-                  <span className={`mt-4 block h-0.5 w-10 rounded-full bg-gradient-to-r ${lang.accent}`} aria-hidden="true" />
-                  <p className="mt-3 text-xs font-semibold text-slate-500">{lang.nativeName}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-            <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />{w.langTrust1 || "Screen-reader ready"}</span>
-            <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-teal-500" />{w.langTrust2 || "Large touch targets"}</span>
-            <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-lime-500" />{w.langTrust3 || "High-contrast text"}</span>
-          </div>
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* ═══════════ 13. PARTNERS ═══════════ */}
-      <section className="relative overflow-hidden bg-slate-50/70 py-24 sm:py-32">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mb-16 max-w-2xl text-center">
-            <div className="flex justify-center"><SectionLabel number="12" label={w.labelPartners || "Partners · Trust"} /></div>
-            <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{w.partnersTitle || "Building this together"}</h2>
-            <div className="mx-auto mt-5 flex items-center justify-center gap-1.5">
-              <span className="h-1 w-12 rounded-full bg-emerald-500" />
-              <span className="h-1 w-6 rounded-full bg-teal-400" />
-              <span className="h-1 w-3 rounded-full bg-lime-400" />
-            </div>
-            <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">{w.partnersDesc || "AfyaLink is grounded in partnership..."}</p>
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {partners.map((p, i) => (
-              <div key={i} className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-base font-black tracking-tight text-white shadow-md transition-transform group-hover:scale-105 group-hover:rotate-3">{p.initials}</span>
-                  <div className="min-w-0">
-                    <p className="truncate text-base font-black tracking-tight text-slate-900">{p.name}</p>
-                    <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">{p.role}</p>
-                  </div>
-                </div>
-                <span className="mt-4 block h-0.5 w-8 rounded-full bg-emerald-500 transition-all group-hover:w-16" aria-hidden="true" />
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
-            <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />{w.partnersTrust1 || "Community-reviewed"}</span>
-            <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-teal-500" />{w.partnersTrust2 || "Privacy-first"}</span>
-            <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-lime-500" />{w.partnersTrust3 || "Free forever"}</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════ 14. CTA ═══════════ */}
-      <section className="relative overflow-hidden bg-white py-24 sm:py-32">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-emerald-700 via-green-800 to-teal-800 px-6 py-16 shadow-2xl sm:px-16 sm:py-24">
+          <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 px-6 py-20 shadow-2xl sm:px-16 sm:py-28 text-center">
             <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-              <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-lime-300/20 blur-3xl" />
-              <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl" />
+              <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-emerald-500/20 blur-3xl" />
+              <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-teal-500/20 blur-3xl" />
             </div>
 
-            <div className="relative z-10 mx-auto max-w-3xl text-center">
-              <div className="flex justify-center">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-7 items-center justify-center rounded-full bg-white/20 px-2.5 text-[10px] font-black tracking-[0.15em] text-white">13</span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-100/90">{w.labelGetInvolved || "Get involved"}</span>
-                  <span className="h-px w-8 bg-white/30" aria-hidden="true" />
-                </div>
-              </div>
-              <h2 className="mt-6 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">{w.joinTitle || "Join Us in Making a Difference"}</h2>
-              <div className="mx-auto mt-6 flex items-center justify-center gap-1.5">
-                <span className="h-1 w-12 rounded-full bg-lime-300" />
-                <span className="h-1 w-6 rounded-full bg-emerald-200" />
-                <span className="h-1 w-3 rounded-full bg-teal-200" />
-              </div>
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-emerald-50/90 sm:text-lg">{w.joinDesc || "Whether you are a health professional..."}</p>
-              <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link to="/contact" className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-emerald-800 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-emerald-50 sm:w-auto">
+            <div className="relative z-10 mx-auto max-w-3xl">
+              <h2 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">{w.joinTitle || "Join Us in Making a Difference"}</h2>
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-emerald-100/90">{w.joinDesc || "Whether you are a health professional..."}</p>
+              
+              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Link to="/contact" className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-8 py-4 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-emerald-400 sm:w-auto">
                   {w.joinBtn1 || "Contact Us"}
-                  <span className="h-4 w-4 transition-transform group-hover:translate-x-0.5">{ICONS.arrow}</span>
+                  <span className="h-4 w-4 transition-transform group-hover:translate-x-1">{ICONS.arrow}</span>
                 </Link>
-                <Link to="/about/our-team" className="inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-white/40 bg-transparent px-7 py-3.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white/10 sm:w-auto">
+                <Link to="/about/our-team" className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-md transition-all hover:border-white/60 hover:bg-white/10 sm:w-auto">
                   {w.joinBtn2 || "Explore Our Team"}
                 </Link>
               </div>
-              <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-100/80">
-                <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-lime-300" />{w.ctaTrust1 || "Community-led"}</span>
-                <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />{w.ctaTrust2 || "Free forever"}</span>
-                <span className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-teal-300" />{w.ctaTrust3 || "Privacy-first"}</span>
-              </div>
             </div>
           </div>
         </div>
       </section>
+
     </div>
   );
 }
